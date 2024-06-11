@@ -1,9 +1,47 @@
-on: push
-jobs: 
-  first-job:
+name: deploy-book
+
+# Run this when the master or main branch changes
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - uses: actions/checkout@v3
+
+      # Install dependencies
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+          # (optional) Cache your executed notebooks between runs
+      # if you have config:
+      # execute:
+      #   execute_notebooks: cache
+      - name: cache executed notebooks
+        uses: actions/cache@v3
+        with:
+          path: _build/.jupyter_cache
+          key: jupyter-book-cache-${{ hashFiles('requirements.txt') }}
+
+    # Build the book
+      - name: Build the book
+        run: |
+          jupyter-book build .
+
+      # Push the book's HTML to github-pages
+      - name: GitHub Pages action
+        uses: peaceiris/actions-gh-pages@v3.6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_build/html
