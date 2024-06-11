@@ -1,3 +1,13 @@
 jupyter-book
 matplotlib
 numpy
+datasets
+transformers
+langchain 
+langchain-community 
+transformers 
+bitsandbytes 
+accelerate 
+langchain-openai 
+langchain 
+evaluate
