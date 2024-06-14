@@ -11,3 +11,4 @@ accelerate
 langchain-openai 
 langchain 
 evaluate
+langchain-togetherai
