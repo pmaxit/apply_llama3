@@ -1,0 +1,1514 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Finetuning large language models &#8212; Apply LLAMA 3</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/Finetuning-Large Language-models';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Notebooks with MyST Markdown" href="../markdown-notebooks.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Apply LLAMA 3 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Apply LLAMA 3 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to the book on applying LLAMA 3
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Finetuning large language models</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fnbs/Finetuning-Large Language-models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/nbs/Finetuning-Large Language-models.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Finetuning large language models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Finetuning large language models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification">Text Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-a-dataset">Identify a dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-engineering">Prompt Engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invoking-the-llm-for-text-classification">Invoking the LLM for text classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompt-engineering">Few shot prompt engineering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tasks">Tasks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-the-model">Finetuning the model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-automodelforsequenceclassification">Using AutoModelForSequenceClassification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loraconfig">LoraConfig</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-testing-pre-training">Model testing - Pre training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">Predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Finetuning the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-large-language-model">Finetuning large language model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization">Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lora-configuration">Lora Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rationale-for-different-approaches">Rationale for different approaches</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scratchpad">Scratchpad</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="finetuning-large-language-models">
+<h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#!pip install langchain langchain-community transformers bitsandbytes accelerate langchain-openai langchain evaluate langchain-together</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#importing libraries</span>
+
+<span class="kn">import</span> <span class="nn">dotenv</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain_core.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">langchain_together</span> <span class="kn">import</span> <span class="n">ChatTogether</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.enum</span> <span class="kn">import</span> <span class="n">EnumOutputParser</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">debug_llm</span><span class="p">,</span> <span class="n">extract_json</span>
+
+
+
+<span class="n">dotenv</span><span class="o">.</span><span class="n">load_dotenv</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the previous chapter, we explored the inner workings of large language models and how they can be leveraged for various tasks, such as text generation and sequence classification, through effective prompting and zero-shot capabilities. We also delved into the vast array of pre-trained models available, courtesy of the vibrant community.</p>
+<p>However, will these pre-trained models exhibit remarkable versatility, their general purpose training may not always be optimized for specific tasks or domains. Fine-tuning emerges as a crucial techique to adapt and refine a language model’s understanding to the nuances of a particular dataset or a task</p>
+<p>Consider the field of medical research, where a language model pre-trained solely on general web text may struggle to perform effectively out-of-the-box. By fine-tuning the model on a corpus of medical literature, its ability to generate relevant medical text or assist in information extraction from healthcare documents can be significantly enhanced.</p>
+<p>Conversational models present another compelling use case. As discussed earlier, large pre-trained models are primarily trained to predict the next token, which may not seamlessly translate to engaging, conversational interactions. By fine-tuning these models on datasets containing everyday conversations and informal language structures, we can adapt their outputs to emulate the natural flow and nuances of interfaces like ChatGPT.</p>
+<p>The primary objective of this chapter is to establish a solid foundation in fine-tuning large language models (LLMs). Consequently, we will delve into the following key areas:</p>
+<ul class="simple">
+<li><p>Classifying the topic of a text using a fine-tuned encoder model</p></li>
+<li><p>Generating text in a particular style using a fine-tuned decoder model</p></li>
+<li><p>Solving multiple tasks with a single model via instruction fine-tuning</p></li>
+<li><p>Parameter-efficient fine-tuning techniques that enable training on smaller GPUs</p></li>
+<li><p>Techniques for reducing computational requirements during model inference</p></li>
+</ul>
+<p>Through this comprehensive exploration, you will gain insights into tailoring language models to excel in specific tasks and domains, unleashing their true potential for a wide range of applications.</p>
+<section id="text-classification">
+<h2>Text Classification<a class="headerlink" href="#text-classification" title="Link to this heading">#</a></h2>
+<p>As we discussed in earlier chapters, LLMs are generally used for generative tasks where task is to predict the next token. Other NLP tasks such as text classification, named entity recognition might not be represented easily with the default objective. Here we will see an example of using LLMs for text classification and then further finetuning to improve the metrics.</p>
+<section id="identify-a-dataset">
+<h3>Identify a dataset<a class="headerlink" href="#identify-a-dataset" title="Link to this heading">#</a></h3>
+<p>Let’s pick publicly available dataset to demonstrate the technique. Here we’ll use AG news dataset, a well known non-commercial dataset used for benchmarking text classification models and researching data mining, information retrieval and data streaming.</p>
+<p>Here, we will explore the dataset to know about the text and labels. The dataset provides 120,000 training examples, more than enough data to fine-tune a model with 4 classification labels. Fine-tuning requires very little data compared to pre-training a model and just using few thousand examples should enough to get a good baseline model.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span> <span class="nn">evaluate</span>
+
+<span class="n">accuracy_metric</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
+<span class="n">raw_datasets</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;ag_news&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Let’s print the first sample from the training dataset. Output shows each sample is a dictionary with two keys: <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">label</span></code> . The <code class="docutils literal notranslate"><span class="pre">text</span></code> key contains the actual text of the news article, while the <code class="docutils literal notranslate"><span class="pre">label</span></code> key contains an integer representing the category of the article. In this particular example, article is labeled with integer <code class="docutils literal notranslate"><span class="pre">2</span></code>, which corresponds to <code class="docutils literal notranslate"><span class="pre">business</span></code> category according to the dataset’s label encoding scheme</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_datasets</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;text&#39;: &quot;Wall St. Bears Claw Back Into the Black (Reuters) Reuters - Short-sellers, Wall Street&#39;s dwindling\\band of ultra-cynics, are seeing green again.&quot;,
+ &#39;label&#39;: 2}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labels</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">names</span>
+<span class="n">labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;World&#39;, &#39;Sports&#39;, &#39;Business&#39;, &#39;Sci/Tech&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before the era of LLMs, we used RNNs or BERT-style models to capture the meaning of a sentence and then fine-tuned them for downstream tasks. Now, let’s explore how to achieve similar results using LLMs.</p>
+<p>But supervised learning isn’t the only option for text classification with LLMs. Unsupervised learning through prompt engineering has emerged as a viable alternative. How well do LLMs perform text classification when guided only by a natural language prompt? Can this approach compete with the results from supervised learning? We’ll explore these questions and more in the next section.</p>
+</section>
+</section>
+<section id="prompt-engineering">
+<h2>Prompt Engineering<a class="headerlink" href="#prompt-engineering" title="Link to this heading">#</a></h2>
+<p>Let’s look at zero-shot capability of large language models (LLMs) where they can perform a task without explicit training data for that specific task.</p>
+<p>We first need to create a dictionary <code class="docutils literal notranslate"><span class="pre">id_to_label</span></code> that maps the lowercase label names to their corresponding integer labels.</p>
+<p>Finally, we modify the dictionary <code class="docutils literal notranslate"><span class="pre">id_to_label</span></code> to expand the <code class="docutils literal notranslate"><span class="pre">sci/tech</span></code> label. This is useful since LLM might be trained with full words rather than abbrevations. We should try to be close to the initial vocabulary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">id_to_label</span> <span class="o">=</span> <span class="p">{</span><span class="n">l</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">)}</span>
+<span class="n">id_to_label</span><span class="p">[</span><span class="s1">&#39;science/technology&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">3</span> <span class="c1">#expanding one of the label</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">id_to_label</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;world&#39;: 0,
+ &#39;sports&#39;: 1,
+ &#39;business&#39;: 2,
+ &#39;sci/tech&#39;: 3,
+ &#39;science/technology&#39;: 3}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now need to set the prompt engineering pipeline for text classification using an LLM. Here we’ll use langchain to add prompts to the text.</p>
+<p>We define a <code class="docutils literal notranslate"><span class="pre">ChatPromptTemplate</span></code> and <code class="docutils literal notranslate"><span class="pre">tagging_prompt</span></code> tht will be used to construct the prompt for the LLM. The prompt instructs the LLM to extract the news label from the given article based on the <code class="docutils literal notranslate"><span class="pre">Classification</span></code> . We’ll try to batch multiple sentences together to save up the computation cost.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetDict</span>
+
+<span class="n">dpdf</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">samples_df</span> <span class="o">=</span> <span class="n">dpdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_label</span><span class="p">(</span><span class="n">example</span><span class="p">):</span>
+    <span class="n">example</span><span class="p">[</span><span class="s1">&#39;str_label&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">example</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">example</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">samples_df</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">get_label</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_226512/1917432805.py:4: DeprecationWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+  samples_df = dpdf.groupby(&#39;label&#39;).apply(lambda x: x.sample(10)).reset_index(drop=True)
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "74aeecb251a043d3ba85323325ac5e2e", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Here’s our first example</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">example</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>text         India Test Fires Nuclear-Capable Missile NEW D...
+label                                                        0
+str_label                                                World
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we define a <code class="docutils literal notranslate"><span class="pre">classification</span></code> class that inherits from Pydantic <code class="docutils literal notranslate"><span class="pre">BaseModel</span></code>. This class represents the structured output format that the LLM will generate. It has a single field <code class="docutils literal notranslate"><span class="pre">label</span></code> of type <code class="docutils literal notranslate"><span class="pre">str</span></code>, which is an enumeration of the four label categories:</p>
+<ul class="simple">
+<li><p>World</p></li>
+<li><p>sports</p></li>
+<li><p>business</p></li>
+<li><p>science/technology</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#tagging_prompt.format(inputs=enumerate(inputs), examples=zip(samples[&#39;text&#39;],samples[&#39;str_label&#39;]), count=len(inputs))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers</span> <span class="kn">import</span> <span class="n">PydanticOutputParser</span>
+
+<span class="k">class</span> <span class="nc">Classification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">label</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">enum</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;world&#39;</span><span class="p">,</span><span class="s1">&#39;sports&#39;</span><span class="p">,</span><span class="s1">&#39;business&#39;</span><span class="p">,</span><span class="s1">&#39;science/technology&#39;</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Label for the article&#39;</span><span class="p">)</span> <span class="c1"># Note: Using the expanded label of sci/tech</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our approach involves utilizing public APIs to obtain labels for articles. To optimize the process, we’ll bundle multiple articles into a single request. This way, instead of receiving one result per request, we’ll get a list of results in a single API call. To streamline the conversion process, we’ll define an additional class that accommodates the list of classification labels returned by the Large Language Model (LLM).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Results</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">results</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="n">Classification</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We initialize the Large Language Model (LLM) using the ChatTogether class from the <code class="docutils literal notranslate"><span class="pre">langchain_together</span></code> library. In this example, we utilize the LLAMA 3 model from the Together API. If you have any doubts about setting up the request, please refer to the first chapter. We set the temperature parameter to 0 to ensure that the LLM generates deterministic outputs. Furthermore, we employ the with_structured_output method to instruct the LLM to generate outputs in the format specified by the Classification class</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span> <span class="o">=</span> <span class="n">PydanticOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">Results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># LLM</span>
+<span class="c1">#llm = ChatOpenAI(temperature=0, model=&quot;gpt-4-turbo&quot;)</span>
+
+<span class="n">tagging_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">##Instruction:</span>
+<span class="sd">Extract the News Label for below {{count}} articles. </span>
+
+<span class="sd">Make sure you give output to all the articles in the same order and use the labels from the following list:</span>
+<span class="sd">1. world</span>
+<span class="sd">2. sports</span>
+<span class="sd">3. business</span>
+<span class="sd">4. science/technology</span>
+
+<span class="sd">Use article number as the reference and provide article number in the responses along with their labels. </span>
+
+<span class="sd">Make sure to only use above labels and do not add anything extra.</span>
+
+<span class="sd">## Output format</span>
+<span class="sd">{{formatting_instructions}}</span>
+
+<span class="sd">Please note output should only be returned in JSON format. Reject all the other formats. </span>
+<span class="sd">##Input:</span>
+<span class="sd">            {%for i,c  in inputs %}</span>
+<span class="sd">            Article: {{i}}</span>
+<span class="sd">            Text: {{c}}</span>
+<span class="sd">            </span>
+<span class="sd">            {% endfor %}</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span><span class="n">template_format</span><span class="o">=</span><span class="s1">&#39;jinja2&#39;</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatTogether</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;meta-llama/Llama-3-70b-chat-hf&quot;</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">)</span>
+
+<span class="n">tagging_chain</span> <span class="o">=</span> <span class="n">tagging_prompt</span>  <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This creates a langchain object which parses the input string in above template, pass it to LLM , result is the passed to Parser which knows how to extract json from the text and convert it into a <code class="docutils literal notranslate"><span class="pre">Pydantic</span></code> class.</p>
+</section>
+<section id="invoking-the-llm-for-text-classification">
+<h2>Invoking the LLM for text classification<a class="headerlink" href="#invoking-the-llm-for-text-classification" title="Link to this heading">#</a></h2>
+<p>Here, we invoke the LLM for text classification using <code class="docutils literal notranslate"><span class="pre">tagging_chain</span></code> we created earlier. First, we prepare 5 random articles for which we want to get the labels. It is the passed to LLM with formatting instructions. Remember, we need output in json format so that it can be automatically parsed by <code class="docutils literal notranslate"><span class="pre">Pydantic</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inputs</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">tagging_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> 
+                      <span class="s1">&#39;examples&#39;</span><span class="p">:</span><span class="nb">zip</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;str_label&#39;</span><span class="p">]),</span> 
+                      <span class="s1">&#39;count&#39;</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span>
+                     <span class="s1">&#39;formatting_instructions&#39;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_format_instructions</span><span class="p">()})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we obtain the outcomes from the LLM call. Upon examination, it’s evident that the length of results matches that of inputs in this instance. It’s important to remember that LLMs are generative engines, so there’s no guarantee that labels will be provided for all inputs. We are prepared to accept this risk in our example. In a production environment, we would prefer to process these examples individually to ensure that each article receives a label. During post-processing, we will filter out any articles that have empty labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Results(results=[Classification(label=&#39;world&#39;), Classification(label=&#39;world&#39;), Classification(label=&#39;world&#39;), Classification(label=&#39;world&#39;), Classification(label=&#39;world&#39;)])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;length of results &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">results</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>length of results  5
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the example above, we correctly found the labels for 5 random articles without training! Isn’t it amazing. We get the output right out of the box.</p>
+<p>We can then repeat this process to all the test samples. Below, we call <code class="docutils literal notranslate"><span class="pre">tagging_chain.invoke</span></code> for all the examples and save output as one of the feature in huggingfaace dataset. Feature is stored as <code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_text</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tagging_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s1">&#39;inputs&#39;</span><span class="p">:</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span><span class="s1">&#39;examples&#39;</span><span class="p">:</span> <span class="nb">zip</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;str_label&#39;</span><span class="p">]),</span> 
+                                <span class="s1">&#39;count&#39;</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="s1">&#39;formatting_instructions&#39;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_format_instructions</span><span class="p">()})</span>
+
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;empty&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">results</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)]]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="n">sample</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">))</span>
+<span class="n">dataset_processed</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">process_text</span><span class="p">,</span><span class="n">num_proc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter &#39;function&#39;=&lt;function process_text at 0x7f388b5b3b50&gt; of the transform datasets.arrow_dataset.Dataset._map_single couldn&#39;t be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won&#39;t be showed.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b587d3b35a6048aebcd8dbbcd2617530", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_processed</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;text&#39;, &#39;label&#39;, &#39;response&#39;],
+    num_rows: 300
+})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_processed</span><span class="o">.</span><span class="n">save_to_disk</span><span class="p">(</span><span class="s1">&#39;data/processed.hf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "6ae97a35e5c84b9384bbbfaaf69a1265", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<section id="evaluation">
+<h3>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h3>
+<p>Let’s evaluate the model with accuracy metrics. This will show how many of the responses are correct.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">references</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">dataset_processed</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;empty&#39;</span><span class="p">]</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_to_label</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">dataset_processed</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;empty&#39;</span><span class="p">]</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_metric</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">references</span><span class="o">=</span><span class="n">references</span><span class="p">,</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;accuracy </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>accuracy 0.85
+</pre></div>
+</div>
+</div>
+</div>
+<p>Total accuracy found is 85%.</p>
+<p>Let’s try to improve the accuracy through further prompt engineering</p>
+</section>
+</section>
+<section id="few-shot-prompt-engineering">
+<h2>Few shot prompt engineering<a class="headerlink" href="#few-shot-prompt-engineering" title="Link to this heading">#</a></h2>
+<p>Above we worked on text classification without providing any help to the model. Few shot engineering refers to the step where we provide certain examples to the model to help in the response. In the prompt below, we provde placeholder for examples. These are extracted from <code class="docutils literal notranslate"><span class="pre">train</span></code> split of dataset to make sure we don’t cheat with our test dataset. We group records by labels and extract 10 examples from each label ( world, sci/tech, sports, business ]. Let’s oberve what effect it can have on the accuracy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># LLM</span>
+<span class="c1">#llm = ChatOpenAI(temperature=0, model=&quot;gpt-4-turbo&quot;)</span>
+
+<span class="n">tagging_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">##Instruction:</span>
+<span class="sd">Extract the News Label for below {{count}} articles. </span>
+
+<span class="sd">Make sure you give output to all the articles in the same order and use the labels from the following list:</span>
+<span class="sd">1. world</span>
+<span class="sd">2. sports</span>
+<span class="sd">3. business</span>
+<span class="sd">4. science/technology</span>
+
+<span class="sd">Use article number as the reference and provide article number in the responses along with their labels. </span>
+
+<span class="sd">Make sure to only use above labels and do not add anything extra.</span>
+<span class="sd">## Here are some examples</span>
+<span class="sd">{% for  example, label in examples %}</span>
+<span class="sd">Text: {{example}}</span>
+<span class="sd">label: {{label}}</span>
+
+<span class="sd">{% endfor %}</span>
+<span class="sd">## Output format</span>
+<span class="sd">{{formatting_instructions}}</span>
+
+<span class="sd">Please note output should only be returned in JSON format. Reject all the other formats. </span>
+<span class="sd">##Input:</span>
+<span class="sd">            {%for i,c  in inputs %}</span>
+<span class="sd">            Article: {{i}}</span>
+<span class="sd">            Text: {{c}}</span>
+<span class="sd">            </span>
+<span class="sd">            {% endfor %}</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span><span class="n">template_format</span><span class="o">=</span><span class="s1">&#39;jinja2&#39;</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatTogether</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;meta-llama/Llama-3-70b-chat-hf&quot;</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">)</span>
+
+<span class="n">tagging_chain</span> <span class="o">=</span> <span class="n">tagging_prompt</span>  <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># inputs = samples[&#39;text&#39;][:10]</span>
+<span class="c1"># results = tagging_chain.invoke({&quot;inputs&quot;: enumerate(inputs), </span>
+<span class="c1">#                       &#39;examples&#39;:zip(samples[&#39;text&#39;],samples[&#39;str_label&#39;]), </span>
+<span class="c1">#                       &#39;count&#39;:len(inputs),</span>
+<span class="c1">#                      &#39;formatting_instructions&#39;: parser.get_format_instructions()})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_text</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tagging_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s1">&#39;inputs&#39;</span><span class="p">:</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span><span class="s1">&#39;examples&#39;</span><span class="p">:</span> <span class="nb">zip</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;str_label&#39;</span><span class="p">]),</span> 
+                                <span class="s1">&#39;count&#39;</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="s1">&#39;formatting_instructions&#39;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_format_instructions</span><span class="p">()})</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;empty&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">results</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)]]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="n">sample</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">dataset_processed</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">process_text</span><span class="p">,</span><span class="n">num_proc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ae210936d86e405c990e5bca120369e4", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<section id="id1">
+<h3>Evaluation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Let’s evaluate the model again with accuracy metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">references</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">dataset_processed</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;empty&#39;</span><span class="p">]</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_to_label</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">dataset_processed</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;empty&#39;</span><span class="p">]</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_metric</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">references</span><span class="o">=</span><span class="n">references</span><span class="p">,</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Accuracy jumped to 87.5% . It shows that additional information helps LLM in text classification. We can further finetune the prompt by adding more examples as context window allows it, negative examples , hard negative examples and so on. Iterating on prompts is an art itself and LLM allows it to modify and see the impact instantly.</p>
+</section>
+<section id="tasks">
+<h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Try improving the accuracy by adding negative examples. Use <code class="docutils literal notranslate"><span class="pre">##Negative</span> <span class="pre">examples</span></code> as the header and obtain examples from a validation set( not shown here ).</p></li>
+<li><p>Checkout out <code class="docutils literal notranslate"><span class="pre">dspy</span></code> package which allows to iteratively optimize the prompt based on an objective.</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="finetuning-the-model">
+<h1>Finetuning the model<a class="headerlink" href="#finetuning-the-model" title="Link to this heading">#</a></h1>
+<p>After going through few prompt engineering models and understanding the impact, We will now move towards finetuning the model. This will ensure improvement in accuracy with the cost of computation.</p>
+<p>There are two main approaches to fine-tuning large language models (LLMs) for text classification tasks.</p>
+<ol class="arabic simple">
+<li><p><strong>Building an Entire Domain-specific Model from scratch</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>This approach involves training a foundational model entirely on industry-specific knowledge and data, using self-supervised learning techniques like next-token prediction and masking</p></li>
+<li><p>It requires a massive amount of domain specific data and significant computational resources</p></li>
+<li><p>An example of this approach is <strong>BloombergGPT</strong> which was trained on decades of financial data, requiring $2.7 million and 53 days of training</p></li>
+<li><p>The advantage of this approach is that the resulting model is highly specialized and tailored to the specific domain, potentially leading to better performance on domain specific tasks</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>Finetuning a pretrained LLM</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>This approach involves taking a pre-trained LLM such as GPT OR BERT, and fine tuning it on a smaller, domain specific dataset.</p></li>
+<li><p>It requires less data computation, and time compared to training from scratch, making it more efficient and cost-effective option</p></li>
+<li><p>Various techniques can be employed to enhance the fine-tuning process, such as transfer learning, retrieval-augmented generation (RAG), and a multi-task learning</p></li>
+<li><p>RAG combines the strengths of pre-trained models and information retrieval systems, enabling the model to retrieve and incorporate domain-specific knowledge during inference</p></li>
+<li><p>Multi-task learning involves training a single model on multiple related tasks simultaneously, allowing the model to learn shared representations and benefit from task synergies.</p></li>
+</ul>
+<section id="using-automodelforsequenceclassification">
+<h2>Using AutoModelForSequenceClassification<a class="headerlink" href="#using-automodelforsequenceclassification" title="Link to this heading">#</a></h2>
+<p>In above methods, we used online API to call the LLM , generate the output and parse the results into the desired format. We can also download the model weights locally and use huggingface class <code class="docutils literal notranslate"><span class="pre">AutomodelForSequenceClassification</span></code> to classify the text. This class automatically adds a linear layer at the end to match the number of the classes.</p>
+<p>Since default model is of a huge size. We need to quantize the weights to be able to load it to a 24GB graphics card. Here we quantize using only 4 bits. It reduces the model size to 4 GB which can be easily loaded into a graphic card for inference</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BitsAndBytesConfig</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">quantization_config</span> <span class="o">=</span> <span class="n">BitsAndBytesConfig</span><span class="p">(</span>
+    <span class="n">load_in_4bit</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="n">bnb_4bit_quant_type</span> <span class="o">=</span> <span class="s1">&#39;nf4&#39;</span><span class="p">,</span>
+    <span class="n">bnb_4bit_use_double_quant</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="n">bnb_4bit_compute_dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span> 
+<span class="p">)</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="p">,</span>
+    <span class="n">quantization_config</span><span class="o">=</span><span class="n">quantization_config</span><span class="p">,</span>
+    <span class="n">num_labels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">device_map</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "55f4a056dd0c48e9aec2add07c80be45", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of LlamaForSequenceClassification were not initialized from the model checkpoint at meta-llama/Meta-Llama-3-8B and are newly initialized: [&#39;score.weight&#39;]
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="loraconfig">
+<h2>LoraConfig<a class="headerlink" href="#loraconfig" title="Link to this heading">#</a></h2>
+<p>Here, we define the LORA Config to be able to load the model parameters. Here is the bird eye view of different options:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">peft</span> <span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">,</span> <span class="n">get_peft_model</span>
+
+<span class="n">lora_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> 
+    <span class="n">lora_alpha</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">target_modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;q_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;k_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;v_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;o_proj&#39;</span><span class="p">],</span>
+    <span class="n">lora_dropout</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> 
+    <span class="n">bias</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span>
+    <span class="n">task_type</span> <span class="o">=</span> <span class="s1">&#39;SEQ_CLS&#39;</span>
+<span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">get_peft_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">lora_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="model-testing-pre-training">
+<h3>Model testing - Pre training<a class="headerlink" href="#model-testing-pre-training" title="Link to this heading">#</a></h3>
+<p>Lets test the model accuracy before training. To do this, we first download the tokenizer, convert it into tokens and pass it to model to generate the sentence embeddings. There are multiple possible ways to extract the embeddings:</p>
+<ol class="arabic simple">
+<li><p>Treat the next token distribution as the sentence embedding since it had seen the whole sentence and can be used as a representative token</p></li>
+<li><p>Get the final embeddings from the last layers for all the tokens and take the average.</p></li>
+</ol>
+<p>Luckily for us <code class="docutils literal notranslate"><span class="pre">AutoModelForSequenceClassification</span></code> handles the complex part in obtaining the sentence embedding from LLM, pass it to a linear module to obtain the logits for num_classes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">add_prefix_space</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span>
+<span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_cache</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">pretraining_tp</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">TrainingArguments</span><span class="p">,</span> <span class="n">Trainer</span>
+
+<span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="s1">&#39;agnews_classification&#39;</span><span class="p">,</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">eval_strategy</span> <span class="o">=</span> <span class="s1">&#39;epoch&#39;</span><span class="p">,</span>
+    <span class="n">save_strategy</span> <span class="o">=</span> <span class="s1">&#39;epoch&#39;</span><span class="p">,</span>
+    <span class="n">load_best_model_at_end</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">report_to</span><span class="o">=</span><span class="s2">&quot;none&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">data_preprocesing</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+
+<span class="n">tokenized_data</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">data_preprocesing</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+<span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="n">tokenized_data</span><span class="o">.</span><span class="n">set_format</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="n">evaluations</span><span class="p">):</span>
+    <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">evaluations</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;balanced_accuracy&#39;</span> <span class="p">:</span> <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">),</span>
+    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span><span class="n">labels</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">DataCollatorWithPadding</span>
+
+<span class="n">collate_fn</span> <span class="o">=</span> <span class="n">DataCollatorWithPadding</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">,</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">training_args</span><span class="p">,</span>
+    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">tokenized_data</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span>
+    <span class="n">eval_dataset</span> <span class="o">=</span> <span class="n">tokenized_data</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">data_collator</span> <span class="o">=</span> <span class="n">collate_fn</span><span class="p">,</span>
+    <span class="n">compute_metrics</span> <span class="o">=</span> <span class="n">compute_metrics</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">train_result</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/puneet/venv/lib/python3.10/site-packages/torch/utils/checkpoint.py:464: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. In version 2.4 we will raise an exception if use_reentrant is not passed. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+      
+      <progress value='6456' max='22500' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [ 6456/22500 7:43:03 < 19:11:06, 0.23 it/s, Epoch 0.86/3]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Epoch</th>
+      <th>Training Loss</th>
+      <th>Validation Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table><p></div></div>
+</div>
+</section>
+<section id="predictions">
+<h3>Predictions<a class="headerlink" href="#predictions" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_predictions</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="kn">import</span> <span class="nn">pdb</span>
+    <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;logits&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">examples</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample = raw_datasets[&#39;test&#39;]</span>
+<span class="c1"># sample = sample.map(get_predictions, batched=True, batch_size=128)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#sentences = test_df.text.tolist()</span>
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>  
+
+<span class="n">all_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;processing &#39;</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">batch_sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">]</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">batch_sentences</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> 
+    <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">all_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;logits&#39;</span><span class="p">])</span>
+        
+<span class="n">final_outputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">all_outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">#test_df[&#39;predictions&#39;]=final_outputs.argmax(axis=1).cpu().numpy()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>processing  0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">balanced_accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+
+<span class="k">def</span> <span class="nf">get_metrics_result</span><span class="p">(</span><span class="n">test_df</span><span class="p">):</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="n">test_df</span><span class="o">.</span><span class="n">label</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">test_df</span><span class="o">.</span><span class="n">predictions</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Classification Report:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Balanced Accuracy Score:&quot;</span><span class="p">,</span> <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy Score:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="n">get_metrics_result</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id2">
+<h2>Finetuning the model<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>After going through few prompt engineering models and understanding the impact, We will now move towards finetuning the model. This will ensure improvement in accuracy with the cost of computation.</p>
+<p>There are two main approaches to fine-tuning large language models (LLMs) for text classification tasks.</p>
+<ol class="arabic simple">
+<li><p><strong>Building an Entire Domain-specific Model from scratch</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>This approach involves training a foundational model entirely on industry-specific knowledge and data, using self-supervised learning techniques like next-token prediction and masking</p></li>
+<li><p>It requires a massive amount of domain specific data and significant computational resources</p></li>
+<li><p>An example of this approach is <strong>BloombergGPT</strong> which was trained on decades of financial data, requiring $2.7 million and 53 days of training</p></li>
+<li><p>The advantage of this approach is that the resulting model is highly specialized and tailored to the specific domain, potentially leading to better performance on domain specific tasks</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>Finetuning a pretrained LLM</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>This approach involves taking a pre-trained LLM such as GPT OR BERT, and fine tuning it on a smaller, domain specific dataset.</p></li>
+<li><p>It requires less data computation, and time compared to training from scratch, making it more efficient and cost-effective option</p></li>
+<li><p>Various techniques can be employed to enhance the fine-tuning process, such as transfer learning, retrieval-augmented generation (RAG), and a multi-task learning</p></li>
+<li><p>RAG combines the strengths of pre-trained models and information retrieval systems, enabling the model to retrieve and incorporate domain-specific knowledge during inference</p></li>
+<li><p>Multi-task learning involves training a single model on multiple related tasks simultaneously, allowing the model to learn shared representations and benefit from task synergies.</p></li>
+</ul>
+<p>Let’s see how we can fine-tune LLAMA 3 model for a text classification task</p>
+<p>There are again two ways to finetune the LLAMA 3 model.</p>
+<ol class="arabic simple">
+<li><p>Using transfer learning on the embeddings extracted from LLAMA 3</p></li>
+<li><p>Finetuning large language model on the new dataset</p></li>
+</ol>
+<p>Approach 1 is more suited when we have less amount of training data.</p>
+<p>We need to first download and prepare model for training. Most of the time, we don’t have enough resources to work on 70b model ( estimated GPU size required &gt; 48GB ), hence we use quantized model</p>
+<section id="transfer-learning">
+<h3>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Link to this heading">#</a></h3>
+</section>
+<section id="finetuning-large-language-model">
+<h3>Finetuning large language model<a class="headerlink" href="#finetuning-large-language-model" title="Link to this heading">#</a></h3>
+</section>
+<section id="quantization">
+<h3>Quantization<a class="headerlink" href="#quantization" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from transformers import BitsAndBytesConfig, AutoModelForSequenceClassification</span>
+<span class="c1"># import torch</span>
+
+<span class="c1"># quantization_config = BitsAndBytesConfig(</span>
+<span class="c1">#     load_in_4bit = True, </span>
+<span class="c1">#     bnb_4bit_quant_type = &#39;nf4&#39;,</span>
+<span class="c1">#     bnb_4bit_use_double_quant = True, </span>
+<span class="c1">#     bnb_4bit_compute_dtype = torch.bfloat16 </span>
+<span class="c1"># )</span>
+
+<span class="c1"># model_name = &quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+
+<span class="c1"># model = AutoModelForSequenceClassification.from_pretrained(</span>
+<span class="c1">#     model_name,</span>
+<span class="c1">#     quantization_config=quantization_config,</span>
+<span class="c1">#     num_labels=4,</span>
+<span class="c1">#     device_map=&#39;auto&#39;</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lora-configuration">
+<h3>Lora Configuration<a class="headerlink" href="#lora-configuration" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">peft</span> <span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">,</span> <span class="n">get_peft_model</span>
+
+<span class="n">lora_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> 
+    <span class="n">lora_alpha</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">target_modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;q_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;k_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;v_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;o_proj&#39;</span><span class="p">],</span>
+    <span class="n">lora_dropout</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> 
+    <span class="n">bias</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span>
+    <span class="n">task_type</span> <span class="o">=</span> <span class="s1">&#39;SEQ_CLS&#39;</span>
+<span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">get_peft_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">lora_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="rationale-for-different-approaches">
+<h3>Rationale for different approaches<a class="headerlink" href="#rationale-for-different-approaches" title="Link to this heading">#</a></h3>
+</section>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Text classification using large language models</p></li>
+</ul>
+<p><a class="reference external" href="https://aclanthology.org/2023.findings-emnlp.603.pdf">https://aclanthology.org/2023.findings-emnlp.603.pdf</a></p>
+</section>
+<section id="scratchpad">
+<h2>Scratchpad<a class="headerlink" href="#scratchpad" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first&#39;</span><span class="p">,</span><span class="s1">&#39;second&#39;</span><span class="p">,</span><span class="s1">&#39;third&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">template_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">&lt;table class=&#39;example collapse&#39;&gt;</span>
+<span class="s1">    &lt;thead&gt;</span>
+<span class="s1">        &lt;tr&gt;</span>
+<span class="s1">            {</span><span class="si">%f</span><span class="s1">or c in columns%}</span>
+<span class="s1">            &lt;th&gt; {{c}} &lt;/th&gt;</span>
+<span class="s1">            {</span><span class="si">% e</span><span class="s1">ndfor %}</span>
+<span class="s1">        &lt;/tr&gt;</span>
+<span class="s1">    &lt;/thead&gt;</span>
+<span class="s1">&lt;/table&gt;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">template</span><span class="o">=</span><span class="n">Template</span><span class="p">(</span><span class="n">template_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;table class=&#39;example collapse&#39;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            
+            &lt;th&gt; first &lt;/th&gt;
+            
+            &lt;th&gt; second &lt;/th&gt;
+            
+            &lt;th&gt; third &lt;/th&gt;
+            
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+&lt;/table&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./nbs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../markdown-notebooks.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Notebooks with MyST Markdown</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Finetuning large language models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification">Text Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-a-dataset">Identify a dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-engineering">Prompt Engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invoking-the-llm-for-text-classification">Invoking the LLM for text classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompt-engineering">Few shot prompt engineering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tasks">Tasks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-the-model">Finetuning the model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-automodelforsequenceclassification">Using AutoModelForSequenceClassification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loraconfig">LoraConfig</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-testing-pre-training">Model testing - Pre training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">Predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Finetuning the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-large-language-model">Finetuning large language model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization">Quantization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lora-configuration">Lora Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rationale-for-different-approaches">Rationale for different approaches</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scratchpad">Scratchpad</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Puneet Girdhar & WeiPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>&lt;no title&gt; &#8212; Apply LLAMA 3</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/Untitled';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Apply LLAMA 3 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Apply LLAMA 3 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to the book on applying LLAMA 3
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Finetuning-Large%20Language-models.html">Finetuning large language models</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fnbs/Untitled.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/nbs/Untitled.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>together
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting together
+  Downloading together-1.2.0-py3-none-any.whl.metadata (11 kB)
+Requirement already satisfied: aiohttp&lt;4.0.0,&gt;=3.9.3 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (3.9.5)
+Requirement already satisfied: click&lt;9.0.0,&gt;=8.1.7 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (8.1.7)
+Collecting eval-type-backport&lt;0.3.0,&gt;=0.1.3 (from together)
+  Downloading eval_type_backport-0.2.0-py3-none-any.whl.metadata (2.2 kB)
+Requirement already satisfied: filelock&lt;4.0.0,&gt;=3.13.1 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (3.14.0)
+Requirement already satisfied: numpy&gt;=1.23.5 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (1.26.2)
+Requirement already satisfied: pillow&lt;11.0.0,&gt;=10.3.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (10.3.0)
+Requirement already satisfied: pyarrow&gt;=10.0.1 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (16.1.0)
+Requirement already satisfied: pydantic&lt;3.0.0,&gt;=2.6.3 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (2.7.2)
+Requirement already satisfied: requests&lt;3.0.0,&gt;=2.31.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (2.32.3)
+Requirement already satisfied: tabulate&lt;0.10.0,&gt;=0.9.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (0.9.0)
+Requirement already satisfied: tqdm&lt;5.0.0,&gt;=4.66.2 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (4.66.4)
+Requirement already satisfied: typer&lt;0.13,&gt;=0.9 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from together) (0.12.3)
+Requirement already satisfied: aiosignal&gt;=1.1.2 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from aiohttp&lt;4.0.0,&gt;=3.9.3-&gt;together) (1.3.1)
+Requirement already satisfied: attrs&gt;=17.3.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from aiohttp&lt;4.0.0,&gt;=3.9.3-&gt;together) (23.2.0)
+Requirement already satisfied: frozenlist&gt;=1.1.1 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from aiohttp&lt;4.0.0,&gt;=3.9.3-&gt;together) (1.4.1)
+Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from aiohttp&lt;4.0.0,&gt;=3.9.3-&gt;together) (6.0.5)
+Requirement already satisfied: yarl&lt;2.0,&gt;=1.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from aiohttp&lt;4.0.0,&gt;=3.9.3-&gt;together) (1.9.4)
+Requirement already satisfied: async-timeout&lt;5.0,&gt;=4.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from aiohttp&lt;4.0.0,&gt;=3.9.3-&gt;together) (4.0.3)
+Requirement already satisfied: annotated-types&gt;=0.4.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from pydantic&lt;3.0.0,&gt;=2.6.3-&gt;together) (0.7.0)
+Requirement already satisfied: pydantic-core==2.18.3 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from pydantic&lt;3.0.0,&gt;=2.6.3-&gt;together) (2.18.3)
+Requirement already satisfied: typing-extensions&gt;=4.6.1 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from pydantic&lt;3.0.0,&gt;=2.6.3-&gt;together) (4.12.1)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from requests&lt;3.0.0,&gt;=2.31.0-&gt;together) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from requests&lt;3.0.0,&gt;=2.31.0-&gt;together) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from requests&lt;3.0.0,&gt;=2.31.0-&gt;together) (2.2.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from requests&lt;3.0.0,&gt;=2.31.0-&gt;together) (2024.6.2)
+Requirement already satisfied: shellingham&gt;=1.3.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from typer&lt;0.13,&gt;=0.9-&gt;together) (1.5.4)
+Requirement already satisfied: rich&gt;=10.11.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from typer&lt;0.13,&gt;=0.9-&gt;together) (13.7.1)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from rich&gt;=10.11.0-&gt;typer&lt;0.13,&gt;=0.9-&gt;together) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from rich&gt;=10.11.0-&gt;typer&lt;0.13,&gt;=0.9-&gt;together) (2.18.0)
+Requirement already satisfied: mdurl~=0.1 in /system/conda/miniconda3/envs/cloudspace/lib/python3.10/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=10.11.0-&gt;typer&lt;0.13,&gt;=0.9-&gt;together) (0.1.2)
+Downloading together-1.2.0-py3-none-any.whl (61 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">61.4/61.4 kB</span> <span class=" -Color -Color-Red">7.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading eval_type_backport-0.2.0-py3-none-any.whl (5.9 kB)
+Installing collected packages: eval-type-backport, together
+Successfully installed eval-type-backport-0.2.0 together-1.2.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dotenv</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">dotenv</span><span class="o">.</span><span class="n">load_dotenv</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">together</span> <span class="kn">import</span> <span class="n">Together</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Together</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TOGETHER_API_KEY&quot;</span><span class="p">))</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;meta-llama/Llama-3-8b-chat-hf&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;tell me about new york&quot;</span><span class="p">}],</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The city that never sleeps! New York is a global hub of culture, finance, media, art, fashion, research, and entertainment. Here&#39;s a brief overview:
+
+**Location**: New York is located in the northeastern United States, in the state of New York. It&#39;s situated on the Atlantic Coast, bordered by New Jersey and Connecticut to the west, and Long Island Sound to the south.
+
+**Population**: As of 2020, the city has a population of over 8.4 million people, making it the most populous city in the United States. The New York metropolitan area, which includes the surrounding counties and cities, has a population of over 20 million people, making it the largest metropolitan area in the United States.
+
+**Neighborhoods**: New York City is divided into five boroughs: Manhattan, Brooklyn, Queens, the Bronx, and Staten Island. Each borough has its own unique character, with Manhattan being the most famous and densely populated. Some popular neighborhoods include:
+
+* SoHo (South of Houston): Known for its trendy boutiques, art galleries, and cast-iron buildings.
+* Greenwich Village: A historic neighborhood with a bohemian vibe, known for its jazz clubs, restaurants, and LGBTQ+ community.
+* Chinatown and Little Italy: Two adjacent neighborhoods with a rich cultural heritage, known for their street food, markets, and festivals.
+* Williamsburg: A hip neighborhood in Brooklyn with a thriving arts and music scene.
+* Harlem: A historic neighborhood with a rich African American culture, known for its jazz clubs, restaurants, and cultural institutions.
+
+**Landmarks**: New York City is home to many iconic landmarks, including:
+
+* The Statue of Liberty and Ellis Island: A symbol of freedom and democracy, located in Liberty Island.
+* Central Park: An 843-acre green oasis in the middle of Manhattan, with walking paths, lakes, and famous landmarks like the Bethesda Fountain.
+* Times Square: A bustling area known for its bright lights, giant billboards, and lively atmosphere.
+* The Empire State Building: A 102-story skyscraper with an observation deck offering stunning views of the city.
+* The Metropolitan Museum of Art: One of the world&#39;s largest and most famous museums, with a collection of over 2 million works of art.
+
+**Cuisine**: New York City is a melting pot of cuisines, with a diverse range of options to suit every taste and budget. Some popular dishes and restaurants include:
+
+* New York-style pizza: Thin crust, foldable, and often topped with mozzarella, pepperoni, and other ingredients.
+* Bagels: A classic Jewish staple, often topped with cream cheese, lox, or other spreads.
+* Deli sandwiches: Thick-cut meats, cheeses, and condiments piled high on rye bread.
+* Chinese food: A staple in many New York neighborhoods, with options ranging from dim sum to Szechuan hot pots.
+* Jewish delis: Classic eateries like Katz&#39;s Delicatessen and Carnegie Deli, serving up pastrami sandwiches, knishes, and matzo ball soup.
+
+**Culture**: New York City is a hub of artistic and cultural expression, with numerous museums, galleries, and performance venues. Some popular attractions include:
+
+* Broadway shows: World-class musicals and plays, with many iconic theaters like the Gershwin and the Al Hirschfeld.
+* The Metropolitan Opera: One of the world&#39;s most famous opera companies, with performances at the Metropolitan Opera House.
+* The New York Philharmonic: A world-renowned orchestra, with performances at David Geffen Hall.
+* The Museum of Modern Art (MoMA): A world-class museum with a collection of modern and contemporary art.
+
+**Transportation**: New York City has a comprehensive public transportation system, including:
+
+* The subway: A 24/7 network of underground trains, with 472 stations and over 850 miles of track.
+* Buses: An extensive network of buses, including express buses and local buses.
+* Yellow cabs: Iconic taxis that can be hailed on the street or booked in advance.
+* Ride-hailing services: Uber, Lyft, and other services that can be booked through mobile apps.
+
+**Weather**: New York City has a humid subtropical climate, with cold winters and hot, humid summers. The average temperature in January, the coldest month, is around 25°F (-4°C), while the average temperature in July, the warmest month, is around 84°F (29°C).
+
+**Cost of living**: New York City is one of the most expensive cities in the United States, with high costs for housing, food, transportation, and entertainment. However, there are many affordable options available, especially outside of Manhattan.
+
+**Safety**: New York City is generally a safe city, with low crime rates compared to other major cities. However, as with any city, it&#39;s always a good idea to take precautions to ensure your personal safety, such as being aware of your surroundings and avoiding walking alone in isolated areas at night.
+
+This is just a small taste of what New York City has to offer. Whether you&#39;re interested in art, culture, food, or entertainment, there&#39;s something for everyone in the city that never sleeps!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">ChatTogether</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;mistralai/Mistral-7B-Instruct-v0.3&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stream the response back from the model</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;Tell me fun things to do in NYC&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> New York City, also known as the &quot;City that Never Sleeps,&quot; is a vibrant and exciting destination with a plethora of activities for everyone. Here are some fun things you might consider:
+
+1. **Statue of Liberty and Ellis Island Tour**: A must-visit for any first-time visitor. Take a ferry to these iconic landmarks and learn about the history of immigration in the United States.
+
+2. **Central Park**: Enjoy a leisurely stroll, rent a bike, visit the Central Park Zoo, or have a picnic. The park is full of beautiful landscapes, lakes, and various attractions.
+
+3. **Broadway Shows**: Catch a performance of a famous Broadway show. Some popular ones include Hamilton, The Lion King, and Wicked.
+
+4. **The Metropolitan Museum of Art**: Explore one of the world&#39;s largest and finest art museums, housing over two million works of art.
+
+5. **Empire State Building**: Visit the observatory for stunning views of the city. Try to time your visit for sunset.
+
+6. **Times Square**: Experience the energy and excitement of the &quot;Crossroads of the World.&quot; Don&#39;t forget to take a picture with the famous New Year&#39;s Eve ball.
+
+7. **High Line**: Walk along this elevated park built on a former rail line, offering stunning views of the city and the Hudson River.
+
+8. **Brooklyn Bridge**: Stroll across this iconic suspension bridge and enjoy the panoramic views of Manhattan and Brooklyn.
+
+9. **9/11 Memorial and Museum**: Pay respects to the victims of the September 11 attacks and learn about the events that unfolded that day.
+
+10. **Food Tours**: Indulge in the city&#39;s diverse food scene by taking a food tour in areas like Chinatown, Little Italy, or the Lower East Side.
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./nbs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Puneet Girdhar & WeiPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
