@@ -1,0 +1,1162 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Transforms &#8212; Apply LLAMA 3</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/image_classifiers/imagenette';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Apply LLAMA 3 - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Apply LLAMA 3 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Welcome to the book on applying LLAMA 3
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nbs/Finetuning-Large%20Language-models.html">Finetuning large language models</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fsrc/image_classifiers/imagenette.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/src/image_classifiers/imagenette.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Transforms</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Transforms</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks">Callbacks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trainer">Trainer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-rate-finder">Learning rate finder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train">Train</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#size-256">Size = 256</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#size-512">Size = 512</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">Evaluation</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;frgfm/imagenette&quot;</span><span class="p">,</span><span class="s1">&#39;160px&#39;</span><span class="p">,</span><span class="n">cache_dir</span><span class="o">=</span><span class="s1">&#39;/mnt/d&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lets look at the dataset</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CLASSES</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">names</span>
+<span class="n">NUM_CLASSES</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CLASSES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="transforms">
+<h1>Transforms<a class="headerlink" href="#transforms" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision.transforms</span> <span class="kn">import</span> <span class="n">v2</span>
+
+<span class="n">normalize</span> <span class="o">=</span> <span class="n">v2</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">train_transform</span> <span class="o">=</span> <span class="n">v2</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">ColorJitter</span><span class="p">(</span><span class="n">brightness</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">RandomRotation</span><span class="p">(</span><span class="n">degrees</span><span class="o">=</span><span class="mi">15</span><span class="p">),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">normalize</span><span class="p">,</span>
+<span class="p">])</span>
+
+<span class="n">test_transform</span> <span class="o">=</span> <span class="n">v2</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">+</span><span class="mi">32</span><span class="p">),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="n">size</span><span class="p">),</span>
+    <span class="n">v2</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">normalize</span><span class="p">,</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/puneet/venv/lib/python3.10/site-packages/torchvision/transforms/v2/_deprecated.py:42: UserWarning: The transform `ToTensor()` is deprecated and will be removed in a future release. Instead, please use `v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)])`.Output is equivalent up to float precision.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_transforms</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s2">&quot;pixel_values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_transform</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+
+<span class="k">def</span> <span class="nf">test_transforms</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s2">&quot;pixel_values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">test_transform</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">train_transforms</span><span class="p">)</span>
+<span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">test_transforms</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;training length&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;validation length&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>training length 9469
+validation length 3925
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modelling">
+<h1>Modelling<a class="headerlink" href="#modelling" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">PretrainedConfig</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">PreTrainedModel</span>
+<span class="kn">from</span> <span class="nn">timm.models.resnet</span> <span class="kn">import</span> <span class="n">BasicBlock</span><span class="p">,</span> <span class="n">Bottleneck</span><span class="p">,</span> <span class="n">ResNet</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">timm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ResNetConfig</span><span class="p">(</span><span class="n">PretrainedConfig</span><span class="p">):</span>
+    <span class="n">model_type</span><span class="o">=</span><span class="s1">&#39;resnet&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;resnet50d&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="n">model_name</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+<span class="k">class</span> <span class="nc">ResnetModelForImageClassification</span><span class="p">(</span><span class="n">PreTrainedModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">timm</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixel_values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">pixel_values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;logits&#39;</span><span class="p">:</span> <span class="n">logits</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;logits&#39;</span><span class="p">:</span> <span class="n">logits</span><span class="p">}</span>
+        
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training">
+<h1>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">TrainingArguments</span><span class="p">,</span> <span class="n">Trainer</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;resnet&#39;</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">-finetuned-eurosat&quot;</span><span class="p">,</span>
+    <span class="n">remove_unused_columns</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">eval_strategy</span> <span class="o">=</span> <span class="s2">&quot;epoch&quot;</span><span class="p">,</span>
+    <span class="n">save_strategy</span> <span class="o">=</span> <span class="s2">&quot;epoch&quot;</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">gradient_accumulation_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">warmup_ratio</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">max_grad_norm</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">load_best_model_at_end</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">metric_for_best_model</span><span class="o">=</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
+    <span class="n">push_to_hub</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">dataloader_num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">fp16</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">evaluate</span>
+<span class="n">metric</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
+
+<span class="c1"># the compute_metrics function takes a Named Tuple as input:</span>
+<span class="c1"># predictions, which are the logits of the model as Numpy arrays,</span>
+
+<span class="c1"># and label_ids, which are the ground-truth labels as Numpy arrays.</span>
+
+<span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="n">eval_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes accuracy on a batch of predictions&quot;&quot;&quot;</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">eval_pred</span><span class="o">.</span><span class="n">predictions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="n">eval_pred</span><span class="o">.</span><span class="n">label_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">example</span><span class="p">[</span><span class="s2">&quot;pixel_values&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">])</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">example</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pixel_values&quot;</span><span class="p">:</span> <span class="n">pixel_values</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="callbacks">
+<h2>Callbacks<a class="headerlink" href="#callbacks" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">MixupCallback</span><span class="p">,</span> <span class="n">CutMixCallback</span><span class="p">,</span> <span class="n">LabelSmoothingCallback</span>
+<span class="kn">from</span> <span class="nn">lr_finder</span> <span class="kn">import</span> <span class="n">LearningRateFinderCallback</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">TrainerCallback</span><span class="p">,</span> <span class="n">TrainingArguments</span>
+<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">lr_scheduler</span>
+
+<span class="kn">from</span> <span class="nn">transformers.optimization</span> <span class="kn">import</span> <span class="n">Adafactor</span><span class="p">,</span> <span class="n">AdafactorSchedule</span>
+<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">AdamW</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">EarlyStoppingCallback</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="trainer">
+<h2>Trainer<a class="headerlink" href="#trainer" title="Link to this heading">#</a></h2>
+<section id="learning-rate-finder">
+<h3>Learning rate finder<a class="headerlink" href="#learning-rate-finder" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resnetconfig</span> <span class="o">=</span> <span class="n">ResNetConfig</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ResnetModelForImageClassification</span><span class="p">(</span><span class="n">resnetconfig</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>  <span class="n">lr</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">)</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">LinearLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">start_factor</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">total_iters</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="c1">#scheduler = lr_scheduler.OneCycleLR(optimizer, max_lr=0.01, steps_per_epoch=20, epochs=10)</span>
+
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">args</span><span class="p">,</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span>
+    <span class="n">eval_dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">],</span>
+    <span class="n">compute_metrics</span><span class="o">=</span><span class="n">compute_metrics</span><span class="p">,</span>
+    <span class="n">data_collator</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">,</span>
+    <span class="n">optimizers</span><span class="o">=</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">),</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span>  <span class="n">LearningRateFinderCallback</span><span class="p">()]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Could not estimate the number of tokens of the input, floating-point operations will not be computed
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+      
+      <progress value='200' max='1110' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [ 200/1110 00:41 < 03:08, 4.83 it/s, Epoch 5/30]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Epoch</th>
+      <th>Training Loss</th>
+      <th>Validation Loss</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2.694400</td>
+      <td>nan</td>
+      <td>0.099618</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.354600</td>
+      <td>nan</td>
+      <td>0.098599</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>3.348100</td>
+      <td>nan</td>
+      <td>0.098599</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.000000</td>
+      <td>nan</td>
+      <td>0.098599</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.000000</td>
+      <td>nan</td>
+      <td>0.098599</td>
+    </tr>
+  </tbody>
+</table><p></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.005000099500000001, 0.010000099000000002, 0.015000098500000003, 0.020000098000000004, 0.020000098000000004, 0.025000097500000006, 0.030000097000000003, 0.03500009650000001, 0.04000009600000001, 0.04500009550000001, 0.050000095000000015, 0.05500009450000002, 0.060000094000000025, 0.06500009350000002, 0.07000009300000003, 0.07500009250000002, 0.08000009200000002, 0.08500009150000003, 0.09000009100000003, 0.09500009050000004, 0.10000009000000003, 0.10500008950000003, 0.11000008900000004, 0.11500008850000004, 0.12000008800000003, 0.12500008750000002, 0.13000008700000004, 0.13500008650000003, 0.14000008600000002, 0.14500008550000004, 0.15000008500000006, 0.15500008450000008, 0.1600000840000001, 0.1650000835000001, 0.17000008300000008, 0.17500008250000007, 0.18000008200000006, 0.18500008150000008, 0.19000008100000007, 0.19500008050000006, 0.20000008000000008, 0.2050000795000001, 0.2050000795000001, 0.2050000795000001, 0.2050000795000001, 0.2050000795000001, 0.21000007900000012, 0.2150000785000001, 0.2200000780000001, 0.2250000775000001, 0.23000007700000008, 0.2350000765000001, 0.24000007600000012, 0.24500007550000014, 0.25000007500000015, 0.2550000745000002, 0.2600000740000002, 0.2650000735000002, 0.27000007300000023, 0.27500007250000025, 0.28000007200000027, 0.28500007150000023, 0.2900000710000002, 0.2950000705000002, 0.3000000700000002, 0.3050000695000002, 0.31000006900000016, 0.3150000685000001, 0.32000006800000014, 0.32500006750000016, 0.3300000670000002, 0.3350000665000002, 0.3400000660000002, 0.34500006550000023, 0.3500000650000002, 0.35500006450000016, 0.3600000640000001, 0.36500006350000014, 0.37000006300000016, 0.3750000625000001, 0.38000006200000014, 0.3850000615000001, 0.3900000610000001, 0.39500006050000014, 0.40000006000000016, 0.4050000595000001, 0.41000005900000014, 0.4150000585000001, 0.42000005800000006, 0.4250000575000001, 0.4300000570000001, 0.4350000565000001, 0.4400000560000001, 0.4450000555000001, 0.4500000550000001, 0.4550000545000001, 0.46000005400000005, 0.46500005350000007, 0.47000005300000003, 0.47500005250000005, 0.48000005200000007, 0.4850000515000001, 0.4900000510000001, 0.4950000505000001, 0.5000000500000001, 0.5050000495000002, 0.5100000490000002, 0.5150000485000001, 0.5200000480000002, 0.5250000475000002, 0.5300000470000003, 0.5350000465000002, 0.5400000460000003, 0.5450000455000003, 0.5500000450000002, 0.5550000445000003, 0.5600000440000003, 0.5650000435000003, 0.5700000430000003, 0.5750000425000003, 0.5800000420000002, 0.5850000415000002, 0.5900000410000001, 0.5950000405000001, 0.6000000400000001, 0.6050000395, 0.610000039, 0.6150000385, 0.6200000379999999, 0.6250000374999999, 0.630000037, 0.6350000365, 0.6400000360000001, 0.6450000355000001, 0.650000035, 0.6550000345000001, 0.6600000340000001, 0.6650000335, 0.670000033, 0.6750000325, 0.6800000319999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999, 0.6850000314999999]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x600 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="../../_images/5ca00cb9ff325246148be870d0badce5150e593fbd8b2ee30e85dfe1dc60b8a4.png" src="../../_images/5ca00cb9ff325246148be870d0badce5150e593fbd8b2ee30e85dfe1dc60b8a4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Learning rate finder complete. Please analyze the plot to select a suitable learning rate.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TrainOutput(global_step=200, training_loss=2.1038630747795106, metrics={&#39;train_runtime&#39;: 42.1658, &#39;train_samples_per_second&#39;: 6736.97, &#39;train_steps_per_second&#39;: 26.325, &#39;total_flos&#39;: 0.0, &#39;train_loss&#39;: 2.1038630747795106, &#39;epoch&#39;: 5.405405405405405})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train">
+<h3>Train<a class="headerlink" href="#train" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resnetconfig</span> <span class="o">=</span> <span class="n">ResNetConfig</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ResnetModelForImageClassification</span><span class="p">(</span><span class="n">resnetconfig</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>  <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">)</span>
+<span class="c1">#scheduler = lr_scheduler.LinearLR(optimizer, start_factor=1e-7, total_iters=200)</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">OneCycleLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">max_lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">steps_per_epoch</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">args</span><span class="p">,</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span>
+    <span class="n">eval_dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">],</span>
+    <span class="n">compute_metrics</span><span class="o">=</span><span class="n">compute_metrics</span><span class="p">,</span>
+    <span class="n">data_collator</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">,</span>
+    <span class="n">optimizers</span><span class="o">=</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">),</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span> <span class="n">EarlyStoppingCallback</span><span class="p">(</span><span class="n">early_stopping_patience</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">LabelSmoothingCallback</span><span class="p">()]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="o">=</span><span class="mi">128</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Could not estimate the number of tokens of the input, floating-point operations will not be computed
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+      
+      <progress value='281' max='1110' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [ 281/1110 00:56 < 02:48, 4.91 it/s, Epoch 7.57/30]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Epoch</th>
+      <th>Training Loss</th>
+      <th>Validation Loss</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1.777700</td>
+      <td>3.947062</td>
+      <td>0.218089</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.632000</td>
+      <td>2.919278</td>
+      <td>0.280255</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.568100</td>
+      <td>1.811921</td>
+      <td>0.414013</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.201100</td>
+      <td>1.634535</td>
+      <td>0.465987</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1.112300</td>
+      <td>1.365303</td>
+      <td>0.559490</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.806300</td>
+      <td>1.377385</td>
+      <td>0.572229</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.852700</td>
+      <td>1.151188</td>
+      <td>0.625987</td>
+    </tr>
+  </tbody>
+</table><p></div><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">36</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:1885,</span> in <span class="ni">Trainer.train</span><span class="nt">(self, resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1883</span>         <span class="n">hf_hub_utils</span><span class="o">.</span><span class="n">enable_progress_bars</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1884</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1885</span>     <span class="k">return</span> <span class="n">inner_training_loop</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1886</span>         <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1887</span>         <span class="n">resume_from_checkpoint</span><span class="o">=</span><span class="n">resume_from_checkpoint</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1888</span>         <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1889</span>         <span class="n">ignore_keys_for_eval</span><span class="o">=</span><span class="n">ignore_keys_for_eval</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1890</span>     <span class="p">)</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:2284,</span> in <span class="ni">Trainer._inner_training_loop</span><span class="nt">(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2281</span> <span class="k">if</span> <span class="n">optimizer_was_run</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2282</span>     <span class="c1"># Delay optimizer scheduling until metrics are generated</span>
+<span class="g g-Whitespace">   </span><span class="mi">2283</span>     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">2284</span>         <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2286</span> <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2287</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">global_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:154,</span> in <span class="ni">LRScheduler.step</span><span class="nt">(self, epoch)</span>
+<span class="g g-Whitespace">    </span><span class="mi">152</span> <span class="k">if</span> <span class="n">epoch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">153</span>     <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="ne">--&gt; </span><span class="mi">154</span>     <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lr</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">155</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">156</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">EPOCH_DEPRECATION_WARNING</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:1784,</span> in <span class="ni">OneCycleLR.get_lr</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1781</span> <span class="n">step_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span>
+<span class="g g-Whitespace">   </span><span class="mi">1783</span> <span class="k">if</span> <span class="n">step_num</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1784</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Tried to step </span><span class="si">{}</span><span class="s2"> times. The specified number of total steps is </span><span class="si">{}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1785</span>                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">step_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="p">))</span>
+<span class="g g-Whitespace">   </span><span class="mi">1787</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1788</span>     <span class="n">start_step</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="ne">ValueError</span>: Tried to step 281 times. The specified number of total steps is 280
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="size-256">
+<h1>Size = 256<a class="headerlink" href="#size-256" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># refresh the callback</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="o">=</span><span class="mi">256</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+    <div>
+      
+      <progress value='222' max='1110' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [ 222/1110 00:43 < 02:57, 5.01 it/s, Epoch 6/30]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Epoch</th>
+      <th>Training Loss</th>
+      <th>Validation Loss</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1.666000</td>
+      <td>3.131905</td>
+      <td>0.247134</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.179900</td>
+      <td>1.861571</td>
+      <td>0.395414</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.991500</td>
+      <td>1.364271</td>
+      <td>0.568408</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.873200</td>
+      <td>1.050813</td>
+      <td>0.652484</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.753300</td>
+      <td>0.882417</td>
+      <td>0.717452</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.644200</td>
+      <td>1.028910</td>
+      <td>0.678726</td>
+    </tr>
+  </tbody>
+</table><p></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TrainOutput(global_step=222, training_loss=1.1074629366934836, metrics={&#39;train_runtime&#39;: 45.3073, &#39;train_samples_per_second&#39;: 6269.854, &#39;train_steps_per_second&#39;: 24.499, &#39;total_flos&#39;: 0.0, &#39;train_loss&#39;: 1.1074629366934836, &#39;epoch&#39;: 6.0})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="size-512">
+<h1>Size = 512<a class="headerlink" href="#size-512" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">512</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">40</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:1885,</span> in <span class="ni">Trainer.train</span><span class="nt">(self, resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1883</span>         <span class="n">hf_hub_utils</span><span class="o">.</span><span class="n">enable_progress_bars</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1884</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1885</span>     <span class="k">return</span> <span class="n">inner_training_loop</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1886</span>         <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1887</span>         <span class="n">resume_from_checkpoint</span><span class="o">=</span><span class="n">resume_from_checkpoint</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1888</span>         <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1889</span>         <span class="n">ignore_keys_for_eval</span><span class="o">=</span><span class="n">ignore_keys_for_eval</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1890</span>     <span class="p">)</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:2284,</span> in <span class="ni">Trainer._inner_training_loop</span><span class="nt">(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2281</span> <span class="k">if</span> <span class="n">optimizer_was_run</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2282</span>     <span class="c1"># Delay optimizer scheduling until metrics are generated</span>
+<span class="g g-Whitespace">   </span><span class="mi">2283</span>     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">2284</span>         <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2286</span> <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2287</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">global_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:154,</span> in <span class="ni">LRScheduler.step</span><span class="nt">(self, epoch)</span>
+<span class="g g-Whitespace">    </span><span class="mi">152</span> <span class="k">if</span> <span class="n">epoch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">153</span>     <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="ne">--&gt; </span><span class="mi">154</span>     <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lr</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">155</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">156</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">EPOCH_DEPRECATION_WARNING</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:1784,</span> in <span class="ni">OneCycleLR.get_lr</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1781</span> <span class="n">step_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span>
+<span class="g g-Whitespace">   </span><span class="mi">1783</span> <span class="k">if</span> <span class="n">step_num</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1784</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Tried to step </span><span class="si">{}</span><span class="s2"> times. The specified number of total steps is </span><span class="si">{}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1785</span>                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">step_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="p">))</span>
+<span class="g g-Whitespace">   </span><span class="mi">1787</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1788</span>     <span class="n">start_step</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="ne">ValueError</span>: Tried to step 282 times. The specified number of total steps is 280
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">remove_callback</span><span class="p">(</span><span class="n">CutMixCallback</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="n">LabelSmoothingCallback</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluation">
+<h1>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">metrics</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;test_loss&#39;: 0.1004561185836792,
+ &#39;test_accuracy&#39;: 0.9681528662420382,
+ &#39;test_runtime&#39;: 1.4936,
+ &#39;test_samples_per_second&#39;: 2627.935,
+ &#39;test_steps_per_second&#39;: 10.713}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/image_classifiers"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Transforms</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling">Modelling</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks">Callbacks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trainer">Trainer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-rate-finder">Learning rate finder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train">Train</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#size-256">Size = 256</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#size-512">Size = 512</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation">Evaluation</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Puneet Girdhar & WeiPeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

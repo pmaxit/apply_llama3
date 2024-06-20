@@ -418,13 +418,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">dotenv</span><span class="o">,</span> <span class="nn">os</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">dotenv</span><span class="o">.</span><span class="n">load_dotenv</span><span class="p">()</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;dotenv&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
 </div>
@@ -613,10 +607,104 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter &#39;function&#39;=&lt;function process_text at 0x7fc83274ad40&gt; of the transform datasets.arrow_dataset.Dataset._map_single couldn&#39;t be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won&#39;t be showed.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter &#39;function&#39;=&lt;function process_text at 0x7f416de3aef0&gt; of the transform datasets.arrow_dataset.Dataset._map_single couldn&#39;t be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won&#39;t be showed.
 </pre></div>
 </div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2cc2cd4779454d8fbf67ad24520b4fb4", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "242b8833eb1244f98ba04540ffc8ce7e"}</script><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/datasets/utils/py_utils.py:704,</span> in <span class="ni">iflatmap_unordered</span><span class="nt">(pool, func, kwargs_iterable)</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">704</span>     <span class="k">yield</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span> <span class="k">except</span> <span class="n">Empty</span><span class="p">:</span>
+
+<span class="nn">File &lt;string&gt;:2,</span> in <span class="ni">get</span><span class="nt">(self, *args, **kwds)</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/multiprocess/managers.py:818,</span> in <span class="ni">BaseProxy._callmethod</span><span class="nt">(self, methodname, args, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">817</span> <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">methodname</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">))</span>
+<span class="ne">--&gt; </span><span class="mi">818</span> <span class="n">kind</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">820</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;#RETURN&#39;</span><span class="p">:</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/multiprocess/connection.py:253,</span> in <span class="ni">_ConnectionBase.recv</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">252</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_readable</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">253</span> <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recv_bytes</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">254</span> <span class="k">return</span> <span class="n">_ForkingPickler</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">getbuffer</span><span class="p">())</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/multiprocess/connection.py:417,</span> in <span class="ni">Connection._recv_bytes</span><span class="nt">(self, maxsize)</span>
+<span class="g g-Whitespace">    </span><span class="mi">416</span> <span class="k">def</span> <span class="nf">_recv_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">417</span>     <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recv</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">418</span>     <span class="n">size</span><span class="p">,</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;!i&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/multiprocess/connection.py:382,</span> in <span class="ni">Connection._recv</span><span class="nt">(self, size, read)</span>
+<span class="g g-Whitespace">    </span><span class="mi">381</span> <span class="k">while</span> <span class="n">remaining</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">382</span>     <span class="n">chunk</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">remaining</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">383</span>     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">TimeoutError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>         <span class="n">example</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span><span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="k">return</span> <span class="n">example</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">dataset_processed</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">process_text</span><span class="p">,</span><span class="n">num_proc</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/datasets/arrow_dataset.py:602,</span> in <span class="ni">transmit_tasks.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">600</span>     <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;Dataset&quot;</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">601</span> <span class="c1"># apply actual function</span>
+<span class="ne">--&gt; </span><span class="mi">602</span> <span class="n">out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;Dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;DatasetDict&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">603</span> <span class="n">datasets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">out</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">604</span> <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">605</span>     <span class="c1"># Remove task templates if a column mapping of the template is no longer valid</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/datasets/arrow_dataset.py:567,</span> in <span class="ni">transmit_format.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">560</span> <span class="n">self_format</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">561</span>     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_type</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">562</span>     <span class="s2">&quot;format_kwargs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">563</span>     <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_columns</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">564</span>     <span class="s2">&quot;output_all_columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_all_columns</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">565</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">566</span> <span class="c1"># apply actual function</span>
+<span class="ne">--&gt; </span><span class="mi">567</span> <span class="n">out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;Dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;DatasetDict&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">568</span> <span class="n">datasets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">out</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">569</span> <span class="c1"># re-apply format to the output</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/datasets/arrow_dataset.py:3248,</span> in <span class="ni">Dataset.map</span><span class="nt">(self, function, with_indices, with_rank, input_columns, batched, batch_size, drop_last_batch, remove_columns, keep_in_memory, load_from_cache_file, cache_file_name, writer_batch_size, features, disable_nullable, fn_kwargs, num_proc, suffix_template, new_fingerprint, desc)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3242</span> <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Spawning </span><span class="si">{</span><span class="n">num_proc</span><span class="si">}</span><span class="s2"> processes&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3243</span> <span class="k">with</span> <span class="n">hf_tqdm</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3244</span>     <span class="n">unit</span><span class="o">=</span><span class="s2">&quot; examples&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3245</span>     <span class="n">total</span><span class="o">=</span><span class="n">pbar_total</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3246</span>     <span class="n">desc</span><span class="o">=</span><span class="p">(</span><span class="n">desc</span> <span class="ow">or</span> <span class="s2">&quot;Map&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; (num_proc=</span><span class="si">{</span><span class="n">num_proc</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">3247</span> <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3248</span>     <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">iflatmap_unordered</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3249</span>         <span class="n">pool</span><span class="p">,</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">_map_single</span><span class="p">,</span> <span class="n">kwargs_iterable</span><span class="o">=</span><span class="n">kwargs_per_job</span>
+<span class="g g-Whitespace">   </span><span class="mi">3250</span>     <span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3251</span>         <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3252</span>             <span class="n">shards_done</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/datasets/utils/py_utils.py:718,</span> in <span class="ni">iflatmap_unordered</span><span class="nt">(pool, func, kwargs_iterable)</span>
+<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">716</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">pool_changed</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">717</span>         <span class="c1"># we get the result in case there&#39;s an error to raise</span>
+<span class="ne">--&gt; </span><span class="mi">718</span>         <span class="p">[</span><span class="n">async_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">async_result</span> <span class="ow">in</span> <span class="n">async_results</span><span class="p">]</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/datasets/utils/py_utils.py:718,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">716</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">pool_changed</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">717</span>         <span class="c1"># we get the result in case there&#39;s an error to raise</span>
+<span class="ne">--&gt; </span><span class="mi">718</span>         <span class="p">[</span><span class="n">async_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">async_result</span> <span class="ow">in</span> <span class="n">async_results</span><span class="p">]</span>
+
+<span class="nn">File /home/zeus/miniconda3/envs/cloudspace/lib/python3.10/site-packages/multiprocess/pool.py:770,</span> in <span class="ni">ApplyResult.get</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">768</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">769</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ready</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">770</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span>
+<span class="g g-Whitespace">    </span><span class="mi">771</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">772</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+<span class="ne">TimeoutError</span>: 
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
