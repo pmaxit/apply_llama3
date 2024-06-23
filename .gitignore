@@ -1,3 +1,8 @@
 data/
 .ipynb_checkpoints/
 lightning_logs
+logs/
+test-*
+*.ckpt
+__pycache__
+*.pdf

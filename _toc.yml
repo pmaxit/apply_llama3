@@ -8,3 +8,5 @@ chapters:
 - file: notebooks
 - file: markdown-notebooks
 - file: nbs/Finetuning-Large Language-models
+- file: src/random/batch_norm
+- file: src/random/lrschedule
