@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -37,9 +37,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -139,6 +139,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../intro.html">
   
@@ -160,7 +162,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -343,10 +345,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -354,7 +356,7 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
@@ -400,22 +402,13 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-the-model">Finetuning the model</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-automodelforsequenceclassification">Using AutoModelForSequenceClassification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loraconfig">LoraConfig</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-testing-pre-training">Model testing - Pre training</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">Predictions</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Finetuning the model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-large-language-model">Finetuning large language model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization">Quantization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lora-configuration">Lora Configuration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rationale-for-different-approaches">Rationale for different approaches</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-shrinking-the-giants">Quantization: Shrinking the giants</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lora-adapters">Lora Adapters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">Comparison</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scratchpad">Scratchpad</a></li>
 </ul>
 </li>
 </ul>
@@ -946,10 +939,26 @@ dtype: object
 <li><p>RAG combines the strengths of pre-trained models and information retrieval systems, enabling the model to retrieve and incorporate domain-specific knowledge during inference</p></li>
 <li><p>Multi-task learning involves training a single model on multiple related tasks simultaneously, allowing the model to learn shared representations and benefit from task synergies.</p></li>
 </ul>
-<section id="using-automodelforsequenceclassification">
-<h2>Using AutoModelForSequenceClassification<a class="headerlink" href="#using-automodelforsequenceclassification" title="Link to this heading">#</a></h2>
-<p>In above methods, we used online API to call the LLM , generate the output and parse the results into the desired format. We can also download the model weights locally and use huggingface class <code class="docutils literal notranslate"><span class="pre">AutomodelForSequenceClassification</span></code> to classify the text. This class automatically adds a linear layer at the end to match the number of the classes.</p>
-<p>Since default model is of a huge size. We need to quantize the weights to be able to load it to a 24GB graphics card. Here we quantize using only 4 bits. It reduces the model size to 4 GB which can be easily loaded into a graphic card for inference</p>
+<section id="transfer-learning">
+<h2>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Link to this heading">#</a></h2>
+<p>In above methods, we used online API to call the LLM , generate the output and parse the results into the desired format. Let’s see how we can fine-tune LLAMA 3 model for a text classification task</p>
+<p>There are again two ways to finetune the LLAMA 3 model.</p>
+<ol class="arabic simple">
+<li><p>Using transfer learning on the embeddings extracted from LLAMA 3</p></li>
+<li><p>Finetuning large language model on the new dataset</p></li>
+</ol>
+<p>Approach 1 is more suited when we have less amount of training data.</p>
+<p>We need to first download and prepare model for training. Most of the time, we don’t have enough resources to work on 70b model ( estimated GPU size required &gt; 48GB ), hence we use quantized model</p>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>Imagine teaching a dog a new trick after it’s already mastered basic commands. You’re not starting from zero; you’re building on existing knowledge. Similarly, transfer learning involves taking a pre-trained language model, often trained on massive datasets like Wikipedia or the entirety of the internet, and fine-tuning it on a smaller, task-specific dataset. This way, we can inherit the general language understanding of the pre-trained model and adapt it to excel at a particular task like sentiment analysis or text summarization.</p>
+<p>The process of <strong>fine-tuning</strong> a large language model involves adapting its weights and biases using your specific dataset. This is typically done by continuing the training process on your new data, but with a lower learning rate. Think of it as a gentle nudge in the right direction, refining the model’s existing knowledge to align with your task.</p>
+</section>
+<section id="quantization-shrinking-the-giants">
+<h2>Quantization: Shrinking the giants<a class="headerlink" href="#quantization-shrinking-the-giants" title="Link to this heading">#</a></h2>
+<p>While transfer learning saves us from training a model from scratch, large language models are still resource-intensive. That’s where quantization comes in. Quantization is a technique to reduce the model’s size and memory requirements by representing its parameters (weights and biases) using lower precision data types.</p>
+<p>Here’s how the code demonstrates quantization:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BitsAndBytesConfig</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span>
@@ -973,17 +982,20 @@ dtype: object
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "55f4a056dd0c48e9aec2add07c80be45", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of LlamaForSequenceClassification were not initialized from the model checkpoint at meta-llama/Meta-Llama-3-8B and are newly initialized: [&#39;score.weight&#39;]
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-</pre></div>
 </div>
-</div>
-</div>
+<p>In this snippet:</p>
+<ul class="simple">
+<li><p>load_in_4bit = True: Loads the model parameters using 4-bit precision.</p></li>
+<li><p>bnb_4bit_quant_type = ‘nf4’: Specifies a specific quantization method (‘nf4’).</p></li>
+<li><p>bnb_4bit_use_double_quant = True: Uses a more advanced quantization scheme for better performance.</p></li>
+<li><p>bnb_4bit_compute_dtype = torch.bfloat16: Computations are done in a 16-bit floating-point format.</p></li>
+</ul>
+<p>By applying quantization, we can significantly reduce the model’s size and memory footprint, making it more accessible for deployment on resource-constrained devices.</p>
 </section>
-<section id="loraconfig">
-<h2>LoraConfig<a class="headerlink" href="#loraconfig" title="Link to this heading">#</a></h2>
-<p>Here, we define the LORA Config to be able to load the model parameters. Here is the bird eye view of different options:</p>
+<section id="lora-adapters">
+<h2>Lora Adapters<a class="headerlink" href="#lora-adapters" title="Link to this heading">#</a></h2>
+<p>LoRA (Low-Rank Adaptation) is a technique designed to make fine-tuning large language models even more efficient. Instead of updating all the model’s parameters, LoRA focuses on a small set of new parameters introduced into specific layers of the model.</p>
+<p>The provided code showcases the LoRA configuration:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">peft</span> <span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">,</span> <span class="n">get_peft_model</span>
@@ -1003,41 +1015,18 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </div>
 </div>
 </div>
-<section id="model-testing-pre-training">
-<h3>Model testing - Pre training<a class="headerlink" href="#model-testing-pre-training" title="Link to this heading">#</a></h3>
-<p>Lets test the model accuracy before training. To do this, we first download the tokenizer, convert it into tokens and pass it to model to generate the sentence embeddings. There are multiple possible ways to extract the embeddings:</p>
-<ol class="arabic simple">
-<li><p>Treat the next token distribution as the sentence embedding since it had seen the whole sentence and can be used as a representative token</p></li>
-<li><p>Get the final embeddings from the last layers for all the tokens and take the average.</p></li>
-</ol>
-<p>Luckily for us <code class="docutils literal notranslate"><span class="pre">AutoModelForSequenceClassification</span></code> handles the complex part in obtaining the sentence embedding from LLM, pass it to a linear module to obtain the logits for num_classes.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
-
-<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">add_prefix_space</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
-<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span>
-<span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_cache</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">pretraining_tp</span> <span class="o">=</span> <span class="mi">1</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>Here’s a breakdown of the parameters:</p>
+<ul class="simple">
+<li><p>r: The rank of the low-rank matrices used in LoRA, controlling the number of trainable parameters.</p></li>
+<li><p>lora_alpha: A scaling factor for the LoRA update.</p></li>
+<li><p>target_modules: Specifies the specific layers (query, key, value, output projections) in which to introduce the new parameters.</p></li>
+<li><p>lora_dropout: A dropout rate to prevent overfitting during training.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">prepare_model_for_kbit_training</span></code> function optimizes the model for efficient training, and <code class="docutils literal notranslate"><span class="pre">get_peft_model</span></code> applies the LoRA configuration.</p>
+</section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<p>Below code finetunes the model for news classification task. Please note, it takes more than 24 hours to train LLAMA3 7B model even after quantization and rquires atleast 24GB of VRAM. It shows how big the models are.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">TrainingArguments</span><span class="p">,</span> <span class="n">Trainer</span>
@@ -1045,12 +1034,12 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 <span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
     <span class="n">output_dir</span> <span class="o">=</span> <span class="s1">&#39;agnews_classification&#39;</span><span class="p">,</span>
     <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-    <span class="n">per_device_train_batch_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-    <span class="n">per_device_eval_batch_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
     <span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
     <span class="n">logging_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
-    <span class="n">eval_strategy</span> <span class="o">=</span> <span class="s1">&#39;epoch&#39;</span><span class="p">,</span>
+    <span class="n">evaluation_strategy</span> <span class="o">=</span> <span class="s1">&#39;epoch&#39;</span><span class="p">,</span>
     <span class="n">save_strategy</span> <span class="o">=</span> <span class="s1">&#39;epoch&#39;</span><span class="p">,</span>
     <span class="n">load_best_model_at_end</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">report_to</span><span class="o">=</span><span class="s2">&quot;none&quot;</span>
@@ -1058,41 +1047,31 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">data_preprocesing</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
-
-<span class="n">tokenized_data</span> <span class="o">=</span> <span class="n">raw_datasets</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">data_preprocesing</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-<span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
-<span class="n">tokenized_data</span><span class="o">.</span><span class="n">set_format</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">)</span>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+The cache for model files in Transformers v4.22.0 has been updated. Migrating your old cache. This is a one-time only operation. You can interrupt this and resume the migration later on by calling `transformers.utils.move_cache()`.
+0it [00:00, ?it/s]
+/opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/training_args.py:1474: FutureWarning: `evaluation_strategy` is deprecated and will be removed in version 4.46 of 🤗 Transformers. Use `eval_strategy` instead
+  warnings.warn(
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="n">evaluations</span><span class="p">):</span>
-    <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">evaluations</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;balanced_accuracy&#39;</span> <span class="p">:</span> <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">),</span>
-    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span><span class="n">labels</span><span class="p">)}</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">DataCollatorWithPadding</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">DataCollatorWithPadding</span>
-
-<span class="n">collate_fn</span> <span class="o">=</span> <span class="n">DataCollatorWithPadding</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
-
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">,</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">training_args</span><span class="p">,</span>
-    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">tokenized_data</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span>
-    <span class="n">eval_dataset</span> <span class="o">=</span> <span class="n">tokenized_data</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
+    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">tokenized_datasets</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span>
+    <span class="n">eval_dataset</span> <span class="o">=</span> <span class="n">tokenized_datasets</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
     <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">data_collator</span> <span class="o">=</span> <span class="n">collate_fn</span><span class="p">,</span>
     <span class="n">compute_metrics</span> <span class="o">=</span> <span class="n">compute_metrics</span><span class="p">,</span>
@@ -1102,200 +1081,46 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/puneet/venv/lib/python3.10/site-packages/torch/utils/checkpoint.py:464: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. In version 2.4 we will raise an exception if use_reentrant is not passed. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
-  warnings.warn(
-</pre></div>
-</div>
-<div class="output text_html">
-    <div>
-      
-      <progress value='6456' max='22500' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      [ 6456/22500 7:43:03 < 19:11:06, 0.23 it/s, Epoch 0.86/3]
-    </div>
-    <table border="1" class="dataframe">
-  <thead>
- <tr style="text-align: left;">
-      <th>Epoch</th>
-      <th>Training Loss</th>
-      <th>Validation Loss</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table><p></div></div>
 </div>
 </section>
-<section id="predictions">
-<h3>Predictions<a class="headerlink" href="#predictions" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_predictions</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-
-    <span class="kn">import</span> <span class="nn">pdb</span>
-    <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="n">examples</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;logits&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">examples</span>
-</pre></div>
+<section id="comparison">
+<h2>Comparison<a class="headerlink" href="#comparison" title="Link to this heading">#</a></h2>
+<p>The choice of fine-tuning approach depends on the delicate balance between data availability, computational resources, and desired performance. Zero-shot learning offers a rapid and inexpensive option, but its performance is often suboptimal. Few-shot learning strikes a middle ground, providing a boost in performance with minimal data. Full fine-tuning, while resource-intensive, generally leads to the highest performance but requires substantial data.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Data Requirements</p></th>
+<th class="head"><p>Computational Cost</p></th>
+<th class="head"><p>Performance</p></th>
+<th class="head"><p>Adaptability</p></th>
+<th class="head"><p>When to Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Zero-Shot</p></td>
+<td><p>None</p></td>
+<td><p>Low</p></td>
+<td><p>Variable</p></td>
+<td><p>Low</p></td>
+<td><p>When data is scarce or for quick experimentation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Few-Shot</p></td>
+<td><p>Minimal</p></td>
+<td><p>Low</p></td>
+<td><p>Moderate</p></td>
+<td><p>Moderate</p></td>
+<td><p>When some examples are available but data is limited</p></td>
+</tr>
+<tr class="row-even"><td><p>Full Fine-Tuning</p></td>
+<td><p>Large</p></td>
+<td><p>High</p></td>
+<td><p>High</p></td>
+<td><p>High</p></td>
+<td><p>When ample task-specific data is available and resources permit</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample = raw_datasets[&#39;test&#39;]</span>
-<span class="c1"># sample = sample.map(get_predictions, batched=True, batch_size=128)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#sentences = test_df.text.tolist()</span>
-
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>  
-
-<span class="n">all_outputs</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;processing &#39;</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-    <span class="n">batch_sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">]</span>
-
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">batch_sentences</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> 
-    <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
-
-    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="n">all_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;logits&#39;</span><span class="p">])</span>
-        
-<span class="n">final_outputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">all_outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="c1">#test_df[&#39;predictions&#39;]=final_outputs.argmax(axis=1).cpu().numpy()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>processing  0
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">balanced_accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
-
-<span class="k">def</span> <span class="nf">get_metrics_result</span><span class="p">(</span><span class="n">test_df</span><span class="p">):</span>
-    <span class="n">y_test</span> <span class="o">=</span> <span class="n">test_df</span><span class="o">.</span><span class="n">label</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">test_df</span><span class="o">.</span><span class="n">predictions</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Classification Report:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Balanced Accuracy Score:&quot;</span><span class="p">,</span> <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy Score:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-
-<span class="n">get_metrics_result</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="id2">
-<h2>Finetuning the model<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>After going through few prompt engineering models and understanding the impact, We will now move towards finetuning the model. This will ensure improvement in accuracy with the cost of computation.</p>
-<p>There are two main approaches to fine-tuning large language models (LLMs) for text classification tasks.</p>
-<ol class="arabic simple">
-<li><p><strong>Building an Entire Domain-specific Model from scratch</strong></p></li>
-</ol>
-<ul class="simple">
-<li><p>This approach involves training a foundational model entirely on industry-specific knowledge and data, using self-supervised learning techniques like next-token prediction and masking</p></li>
-<li><p>It requires a massive amount of domain specific data and significant computational resources</p></li>
-<li><p>An example of this approach is <strong>BloombergGPT</strong> which was trained on decades of financial data, requiring $2.7 million and 53 days of training</p></li>
-<li><p>The advantage of this approach is that the resulting model is highly specialized and tailored to the specific domain, potentially leading to better performance on domain specific tasks</p></li>
-</ul>
-<ol class="arabic simple" start="2">
-<li><p><strong>Finetuning a pretrained LLM</strong></p></li>
-</ol>
-<ul class="simple">
-<li><p>This approach involves taking a pre-trained LLM such as GPT OR BERT, and fine tuning it on a smaller, domain specific dataset.</p></li>
-<li><p>It requires less data computation, and time compared to training from scratch, making it more efficient and cost-effective option</p></li>
-<li><p>Various techniques can be employed to enhance the fine-tuning process, such as transfer learning, retrieval-augmented generation (RAG), and a multi-task learning</p></li>
-<li><p>RAG combines the strengths of pre-trained models and information retrieval systems, enabling the model to retrieve and incorporate domain-specific knowledge during inference</p></li>
-<li><p>Multi-task learning involves training a single model on multiple related tasks simultaneously, allowing the model to learn shared representations and benefit from task synergies.</p></li>
-</ul>
-<p>Let’s see how we can fine-tune LLAMA 3 model for a text classification task</p>
-<p>There are again two ways to finetune the LLAMA 3 model.</p>
-<ol class="arabic simple">
-<li><p>Using transfer learning on the embeddings extracted from LLAMA 3</p></li>
-<li><p>Finetuning large language model on the new dataset</p></li>
-</ol>
-<p>Approach 1 is more suited when we have less amount of training data.</p>
-<p>We need to first download and prepare model for training. Most of the time, we don’t have enough resources to work on 70b model ( estimated GPU size required &gt; 48GB ), hence we use quantized model</p>
-<section id="transfer-learning">
-<h3>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Link to this heading">#</a></h3>
-</section>
-<section id="finetuning-large-language-model">
-<h3>Finetuning large language model<a class="headerlink" href="#finetuning-large-language-model" title="Link to this heading">#</a></h3>
-</section>
-<section id="quantization">
-<h3>Quantization<a class="headerlink" href="#quantization" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from transformers import BitsAndBytesConfig, AutoModelForSequenceClassification</span>
-<span class="c1"># import torch</span>
-
-<span class="c1"># quantization_config = BitsAndBytesConfig(</span>
-<span class="c1">#     load_in_4bit = True, </span>
-<span class="c1">#     bnb_4bit_quant_type = &#39;nf4&#39;,</span>
-<span class="c1">#     bnb_4bit_use_double_quant = True, </span>
-<span class="c1">#     bnb_4bit_compute_dtype = torch.bfloat16 </span>
-<span class="c1"># )</span>
-
-<span class="c1"># model_name = &quot;meta-llama/Meta-Llama-3-8B&quot;</span>
-
-<span class="c1"># model = AutoModelForSequenceClassification.from_pretrained(</span>
-<span class="c1">#     model_name,</span>
-<span class="c1">#     quantization_config=quantization_config,</span>
-<span class="c1">#     num_labels=4,</span>
-<span class="c1">#     device_map=&#39;auto&#39;</span>
-<span class="c1"># )</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="lora-configuration">
-<h3>Lora Configuration<a class="headerlink" href="#lora-configuration" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">peft</span> <span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">,</span> <span class="n">get_peft_model</span>
-
-<span class="n">lora_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> 
-    <span class="n">lora_alpha</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="n">target_modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;q_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;k_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;v_proj&#39;</span><span class="p">,</span> <span class="s1">&#39;o_proj&#39;</span><span class="p">],</span>
-    <span class="n">lora_dropout</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> 
-    <span class="n">bias</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span>
-    <span class="n">task_type</span> <span class="o">=</span> <span class="s1">&#39;SEQ_CLS&#39;</span>
-<span class="p">)</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">prepare_model_for_kbit_training</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">get_peft_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">lora_config</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="rationale-for-different-approaches">
-<h3>Rationale for different approaches<a class="headerlink" href="#rationale-for-different-approaches" title="Link to this heading">#</a></h3>
-</section>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
@@ -1303,71 +1128,6 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 <li><p>Text classification using large language models</p></li>
 </ul>
 <p><a class="reference external" href="https://aclanthology.org/2023.findings-emnlp.603.pdf">https://aclanthology.org/2023.findings-emnlp.603.pdf</a></p>
-</section>
-<section id="scratchpad">
-<h2>Scratchpad<a class="headerlink" href="#scratchpad" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first&#39;</span><span class="p">,</span><span class="s1">&#39;second&#39;</span><span class="p">,</span><span class="s1">&#39;third&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">template_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">&lt;table class=&#39;example collapse&#39;&gt;</span>
-<span class="s1">    &lt;thead&gt;</span>
-<span class="s1">        &lt;tr&gt;</span>
-<span class="s1">            {</span><span class="si">%f</span><span class="s1">or c in columns%}</span>
-<span class="s1">            &lt;th&gt; {{c}} &lt;/th&gt;</span>
-<span class="s1">            {</span><span class="si">% e</span><span class="s1">ndfor %}</span>
-<span class="s1">        &lt;/tr&gt;</span>
-<span class="s1">    &lt;/thead&gt;</span>
-<span class="s1">&lt;/table&gt;</span>
-<span class="s1">&#39;&#39;&#39;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">template</span><span class="o">=</span><span class="n">Template</span><span class="p">(</span><span class="n">template_str</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;table class=&#39;example collapse&#39;&gt;
-    &lt;thead&gt;
-        &lt;tr&gt;
-            
-            &lt;th&gt; first &lt;/th&gt;
-            
-            &lt;th&gt; second &lt;/th&gt;
-            
-            &lt;th&gt; third &lt;/th&gt;
-            
-        &lt;/tr&gt;
-    &lt;/thead&gt;
-&lt;/table&gt;
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 </section>
 
@@ -1453,22 +1213,13 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-the-model">Finetuning the model</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-automodelforsequenceclassification">Using AutoModelForSequenceClassification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loraconfig">LoraConfig</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-testing-pre-training">Model testing - Pre training</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions">Predictions</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Finetuning the model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finetuning-large-language-model">Finetuning large language model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization">Quantization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lora-configuration">Lora Configuration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rationale-for-different-approaches">Rationale for different approaches</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-shrinking-the-giants">Quantization: Shrinking the giants</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lora-adapters">Lora Adapters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">Comparison</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scratchpad">Scratchpad</a></li>
 </ul>
 </li>
 </ul>
@@ -1520,8 +1271,8 @@ By Puneet Girdhar & WeiPeng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
