@@ -423,49 +423,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="finetuning-large-language-models">
+  <section class="tex2jax_ignore mathjax_ignore" id="finetuning-large-language-models">
 <h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#!pip install langchain langchain-community transformers bitsandbytes accelerate langchain-openai langchain evaluate langchain-together</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#importing libraries</span>
-
-<span class="kn">import</span> <span class="nn">dotenv</span><span class="o">,</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
-<span class="kn">from</span> <span class="nn">langchain_core.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span> <span class="nn">langchain_together</span> <span class="kn">import</span> <span class="n">ChatTogether</span>
-<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">langchain.output_parsers.enum</span> <span class="kn">import</span> <span class="n">EnumOutputParser</span>
-<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">debug_llm</span><span class="p">,</span> <span class="n">extract_json</span>
-
-
-
-<span class="n">dotenv</span><span class="o">.</span><span class="n">load_dotenv</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-</div>
-</div>
 <p>In the previous chapter, we explored the inner workings of large language models and how they can be leveraged for various tasks, such as text generation and sequence classification, through effective prompting and zero-shot capabilities. We also delved into the vast array of pre-trained models available, courtesy of the vibrant community.</p>
 <p>However, will these pre-trained models exhibit remarkable versatility, their general purpose training may not always be optimized for specific tasks or domains. Fine-tuning emerges as a crucial techique to adapt and refine a language model’s understanding to the nuances of a particular dataset or a task</p>
 <p>Consider the field of medical research, where a language model pre-trained solely on general web text may struggle to perform effectively out-of-the-box. By fine-tuning the model on a corpus of medical literature, its ability to generate relevant medical text or assist in information extraction from healthcare documents can be significantly enhanced.</p>
@@ -612,13 +571,6 @@ dtype: object
 <li><p>business</p></li>
 <li><p>science/technology</p></li>
 </ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#tagging_prompt.format(inputs=enumerate(inputs), examples=zip(samples[&#39;text&#39;],samples[&#39;str_label&#39;]), count=len(inputs))</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
