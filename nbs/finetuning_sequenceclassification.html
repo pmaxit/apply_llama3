@@ -411,18 +411,6 @@ document.write(`
 <h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pwd</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/home/puneet/Projects/apply_llama3/nbs&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -463,6 +451,16 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading builder script: 100%|██████████| 4.20k/4.20k [00:00&lt;00:00, 2.44MB/s]
+Downloading readme: 100%|██████████████████| 8.07k/8.07k [00:00&lt;00:00, 13.9MB/s]
+Downloading data: 100%|████████████████████| 18.6M/18.6M [00:01&lt;00:00, 17.0MB/s]
+Downloading data: 100%|████████████████████| 1.23M/1.23M [00:00&lt;00:00, 2.16MB/s]
+Generating train split: 100%|█| 120000/120000 [00:00&lt;00:00, 1744005.43 examples/
+Generating test split: 100%|████| 7600/7600 [00:00&lt;00:00, 2224163.44 examples/s]
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -492,7 +490,8 @@ document.write(`
 <p><strong>Model Name</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#model_name = &quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;bert-base-cased&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -529,7 +528,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
     <span class="n">model_name</span><span class="p">,</span>
     <span class="n">quantization_config</span><span class="o">=</span><span class="n">quantization_config</span><span class="p">,</span>
-    <span class="n">num_labels</span><span class="o">=</span><span class="mi">3</span>
+    <span class="n">num_labels</span><span class="o">=</span><span class="mi">4</span>
 <span class="p">)</span>
 
 <span class="n">model</span>
@@ -537,41 +536,47 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/puneet/venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-`low_cpu_mem_usage` was None, now set to True since model is quantized.
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "67287901bf7f43ca9d66d3ae0649c7cf", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of LlamaForSequenceClassification were not initialized from the model checkpoint at meta-llama/Meta-Llama-3-8B and are newly initialized: [&#39;score.weight&#39;]
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LlamaForSequenceClassification(
-  (model): LlamaModel(
-    (embed_tokens): Embedding(128256, 4096)
-    (layers): ModuleList(
-      (0-31): 32 x LlamaDecoderLayer(
-        (self_attn): LlamaSdpaAttention(
-          (q_proj): Linear4bit(in_features=4096, out_features=4096, bias=False)
-          (k_proj): Linear4bit(in_features=4096, out_features=1024, bias=False)
-          (v_proj): Linear4bit(in_features=4096, out_features=1024, bias=False)
-          (o_proj): Linear4bit(in_features=4096, out_features=4096, bias=False)
-          (rotary_emb): LlamaRotaryEmbedding()
-        )
-        (mlp): LlamaMLP(
-          (gate_proj): Linear4bit(in_features=4096, out_features=14336, bias=False)
-          (up_proj): Linear4bit(in_features=4096, out_features=14336, bias=False)
-          (down_proj): Linear4bit(in_features=14336, out_features=4096, bias=False)
-          (act_fn): SiLU()
-        )
-        (input_layernorm): LlamaRMSNorm()
-        (post_attention_layernorm): LlamaRMSNorm()
-      )
-    )
-    (norm): LlamaRMSNorm()
-  )
-  (score): Linear(in_features=4096, out_features=3, bias=False)
-)
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">model_name</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">quantization_config</span><span class="o">=</span><span class="n">quantization_config</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">num_labels</span><span class="o">=</span><span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">model</span>
+
+<span class="nn">File /opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/models/auto/auto_factory.py:563,</span> in <span class="ni">_BaseAutoModelClass.from_pretrained</span><span class="nt">(cls, pretrained_model_name_or_path, *model_args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">561</span> <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">562</span>     <span class="n">model_class</span> <span class="o">=</span> <span class="n">_get_model_class</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_mapping</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">563</span>     <span class="k">return</span> <span class="n">model_class</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">564</span>         <span class="n">pretrained_model_name_or_path</span><span class="p">,</span> <span class="o">*</span><span class="n">model_args</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">hub_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">565</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">566</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">567</span>     <span class="sa">f</span><span class="s2">&quot;Unrecognized configuration class </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2"> for this kind of AutoModel: </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">568</span>     <span class="sa">f</span><span class="s2">&quot;Model type should be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">_model_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">569</span> <span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/modeling_utils.py:3202,</span> in <span class="ni">PreTrainedModel.from_pretrained</span><span class="nt">(cls, pretrained_model_name_or_path, config, cache_dir, ignore_mismatched_sizes, force_download, local_files_only, token, revision, use_safetensors, *model_args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3199</span>     <span class="n">hf_quantizer</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">3201</span> <span class="k">if</span> <span class="n">hf_quantizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3202</span>     <span class="n">hf_quantizer</span><span class="o">.</span><span class="n">validate_environment</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3203</span>         <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch_dtype</span><span class="p">,</span> <span class="n">from_tf</span><span class="o">=</span><span class="n">from_tf</span><span class="p">,</span> <span class="n">from_flax</span><span class="o">=</span><span class="n">from_flax</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="n">device_map</span>
+<span class="g g-Whitespace">   </span><span class="mi">3204</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3205</span>     <span class="n">torch_dtype</span> <span class="o">=</span> <span class="n">hf_quantizer</span><span class="o">.</span><span class="n">update_torch_dtype</span><span class="p">(</span><span class="n">torch_dtype</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3206</span>     <span class="n">device_map</span> <span class="o">=</span> <span class="n">hf_quantizer</span><span class="o">.</span><span class="n">update_device_map</span><span class="p">(</span><span class="n">device_map</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/quantizers/quantizer_bnb_4bit.py:62,</span> in <span class="ni">Bnb4BitHfQuantizer.validate_environment</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="k">def</span> <span class="nf">validate_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+<span class="ne">---&gt; </span><span class="mi">62</span>         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No GPU found. A GPU is needed for quantization.&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span>     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_accelerate_available</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_bitsandbytes_available</span><span class="p">()):</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span>         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span>             <span class="s2">&quot;Using `bitsandbytes` 8-bit quantization requires Accelerate: `pip install accelerate` &quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span>             <span class="s2">&quot;and the latest version of bitsandbytes: `pip install -i https://pypi.org/simple/ bitsandbytes`&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span>         <span class="p">)</span>
+
+<span class="ne">RuntimeError</span>: No GPU found. A GPU is needed for quantization.
 </pre></div>
 </div>
 </div>
@@ -714,7 +719,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MAX_LEN</span> <span class="o">=</span> <span class="mi">512</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MAX_LEN</span> <span class="o">=</span> <span class="mi">128</span>
 <span class="n">col_to_delete</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">llama_preprocessing_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
