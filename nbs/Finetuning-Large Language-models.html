@@ -385,6 +385,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Finetuning large language models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapter-outline">Chapter Outline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification">Text Classification</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-a-dataset">Identify a dataset</a></li>
 </ul>
@@ -430,14 +431,16 @@ document.write(`
 <p>Consider the field of medical research, where a language model pre-trained solely on general web text may struggle to perform effectively out-of-the-box. By fine-tuning the model on a corpus of medical literature, its ability to generate relevant medical text or assist in information extraction from healthcare documents can be significantly enhanced.</p>
 <p>Conversational models present another compelling use case. As discussed earlier, large pre-trained models are primarily trained to predict the next token, which may not seamlessly translate to engaging, conversational interactions. By fine-tuning these models on datasets containing everyday conversations and informal language structures, we can adapt their outputs to emulate the natural flow and nuances of interfaces like ChatGPT.</p>
 <p>The primary objective of this chapter is to establish a solid foundation in fine-tuning large language models (LLMs). Consequently, we will delve into the following key areas:</p>
+<section id="chapter-outline">
+<h2>Chapter Outline<a class="headerlink" href="#chapter-outline" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Classifying the topic of a text using a fine-tuned encoder model</p></li>
-<li><p>Generating text in a particular style using a fine-tuned decoder model</p></li>
-<li><p>Solving multiple tasks with a single model via instruction fine-tuning</p></li>
+<li><p>Classifying the topic of a text using LLAMA 3</p></li>
+<li><p>Finetuning the classification using prompt engineering</p></li>
+<li><p>Finetuning LLAMA 3 with retraining on the dataset</p></li>
 <li><p>Parameter-efficient fine-tuning techniques that enable training on smaller GPUs</p></li>
-<li><p>Techniques for reducing computational requirements during model inference</p></li>
 </ul>
 <p>Through this comprehensive exploration, you will gain insights into tailoring language models to excel in specific tasks and domains, unleashing their true potential for a wide range of applications.</p>
+</section>
 <section id="text-classification">
 <h2>Text Classification<a class="headerlink" href="#text-classification" title="Link to this heading">#</a></h2>
 <p>As we discussed in earlier chapters, LLMs are generally used for generative tasks where task is to predict the next token. Other NLP tasks such as text classification, named entity recognition might not be represented easily with the default objective. Here we will see an example of using LLMs for text classification and then further finetuning to improve the metrics.</p>
@@ -1148,6 +1151,7 @@ The cache for model files in Transformers v4.22.0 has been updated. Migrating yo
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Finetuning large language models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapter-outline">Chapter Outline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification">Text Classification</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-a-dataset">Identify a dataset</a></li>
 </ul>
