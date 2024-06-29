@@ -60,3 +60,27 @@ def debug_llm(chat_message: HumanMessage):
     print(content)
     print('..................'*2)
     return ChatPromptValue(messages=[HumanMessage(content=content)])
+
+
+def collate_inputs_labels(examples):
+    # create RNN like input
+    #max_len = max(len(ex) for ex in examples['input_ids'])
+
+    all_input_ids = []
+    all_labels = []
+
+    for input_ids in examples['input_ids']:
+        for i in range(1, len(input_ids)):
+            all_input_ids.append(input_ids[:i])
+            all_labels.append(input_ids[i])
+    
+        if len(input_ids) > 0:
+            all_input_ids.append(input_ids)
+            all_labels.append(tokenizer.eos_token_id)
+
+    
+    return {
+        'input_ids_new': all_input_ids,
+        'labels_new': all_labels
+    }
+    

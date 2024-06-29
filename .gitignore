@@ -6,3 +6,9 @@ test-*
 *.ckpt
 __pycache__
 *.pdf
+results/
+runs/
+output-*
+bin/
+cached
+
