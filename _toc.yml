@@ -4,9 +4,8 @@
 format: jb-book
 root: intro
 chapters:
-- file: markdown
-- file: notebooks
-- file: markdown-notebooks
 - file: nbs/Finetuning-Large Language-models
+- file: nbs/Building LLAMA 3 from scratch
 - file: src/random/batch_norm
 - file: src/random/lrschedule
+
