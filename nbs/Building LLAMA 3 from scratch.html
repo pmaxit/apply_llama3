@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/Building LLAMA 3 from scratch';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -384,8 +386,34 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">Outline</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Building LLAMA 3 from scratch</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapter-outline">Chapter Outline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-block">Building block</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#different-flavors-of-language-models">Different Flavors of Language Models:</a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-model">N-gram model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-gram-model-using-pytorch">Bi-gram model using pytorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bigram-model">Bigram model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-implementation">Pytorch implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-enhancements">Limitations &amp; Enhancements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-network">Recurrent Neural network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-rnn-structure">A simple RNN structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-text-generation">Training and text generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-mechanism-focus-where-it-matters">Attention Mechanism: Focus where it matters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a></li>
+</ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -399,8 +427,668 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="building-llama-3-from-scratch">
 <h1>Building LLAMA 3 from scratch<a class="headerlink" href="#building-llama-3-from-scratch" title="Link to this heading">#</a></h1>
 <p>This chapter guides you through the process of building a LLAMA 3 model from scratch using PyTorch and Hugging Face Transformers. While we won’t replicate the full scale of LLAMA 3 due to computational constraints, you’ll gain a solid understanding of the core concepts and implementation steps.</p>
-<section id="outline">
-<h2>Outline<a class="headerlink" href="#outline" title="Link to this heading">#</a></h2>
+<section id="chapter-outline">
+<h2>Chapter Outline<a class="headerlink" href="#chapter-outline" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Building block for a language model</p></li>
+<li><p>N-gram language model</p></li>
+<li><p>RNN neural network using attention</p></li>
+<li><p>Transformer Architecture: The Foundation</p></li>
+<li><p>Tokenization and Data Preparation</p></li>
+<li><p>The Decoder-Only LLAMA Model</p></li>
+<li><p>Training with PyTorch</p></li>
+<li><p>(Optional) Using Hugging Face Transformers</p></li>
+<li><p>(Optional) converting it into a Chat like format</p></li>
+</ol>
+<p>Imagine a young apprentice learning at the feet of Shakespeare, soaking in his vast knowledge word by word. Over time, the apprentice learns to anticipate the next word, the next phrase, the next line of verse. This is the essence of a language model - a system that predicts the next word, given the ones that come before.</p>
+<p>In today’s digital world, language models are powered by algorithms and trained on massive datasets of text, much like that apprentice studying Shakespeare’s plays. They’ve become essential tools for a variety of tasks:</p>
+<ul class="simple">
+<li><p>Writing Assistance: They help us write emails, craft essays, and even generate creative content.</p></li>
+<li><p>Translation: They bridge language barriers by translating text from one language to another.</p></li>
+<li><p>Conversation: They power chatbots and voice assistants, engaging in conversations with us.</p></li>
+</ul>
+</section>
+<section id="building-block">
+<h2>Building block<a class="headerlink" href="#building-block" title="Link to this heading">#</a></h2>
+<p>At its core, a langauge model is a statistical model. It analyzes the patterns and probabilities of words occuring together in a vast corpus of text. The more data it’s exposed to, the better it becomes at predicting the next word in a sequence.</p>
+<p>Think of it like this:</p>
+<ul class="simple">
+<li><p><strong>Tokenization</strong>: The model breaks down text into smaller units called tokens (words, punctuation, etc.).</p></li>
+<li><p><strong>Pattern Recognition</strong>: It learns the relationships between these tokens, understanding which words are likely to follow others.</p></li>
+<li><p><strong>Prediction</strong>: Given a sequence of words, it calculates the probability of different words coming next and chooses the most likely one.</p></li>
+</ul>
+<section id="different-flavors-of-language-models">
+<h3>Different Flavors of Language Models:<a class="headerlink" href="#different-flavors-of-language-models" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>N-gram Models</strong>: These simpler models look at a fixed number of previous words (bigrams consider two, trigrams consider three) to predict the next.</p></li>
+<li><p><strong>Neural Network Models</strong>: These more sophisticated models use artificial neural networks to capture complex patterns in language.</p></li>
+<li><p><strong>Transformer Models</strong>: The latest breakthrough, these models use attention mechanisms to weigh the importance of different words in a sequence, leading to remarkable performance.</p></li>
+</ol>
+</section>
+</section>
+<section id="n-gram-model">
+<h2>N-gram model<a class="headerlink" href="#n-gram-model" title="Link to this heading">#</a></h2>
+<p>An n-gram is a sequence of n words. For instance, “please turn” and “turn your” are bigrams (2-grams), while “please turn your” is a trigram (3-gram). N-gram models estimate the probability of a word given the preceding n-1 words.</p>
+<p>To calculate the probability of a word w given a history h, we can use relative frequency counts from a large corpus:</p>
+<p><span class="math notranslate nohighlight">\(P(w|h) = C(hw) / C(h)\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p>P(w|h) is the probability of word w given history h.</p></li>
+<li><p>C(hw) is the count of the sequence hw in the corpus.</p></li>
+<li><p>C(h) is the count of the history h in the corpus.</p></li>
+</ul>
+<p>However, this approach is limited due to the vastness and creativity of language. Many possible word sequences might not exist in even the largest corpus.</p>
+<section id="bi-gram-model-using-pytorch">
+<h3>Bi-gram model using pytorch<a class="headerlink" href="#bi-gram-model-using-pytorch" title="Link to this heading">#</a></h3>
+<p>Here, we will implement bi-gram model using pytorch. Although simple but bigram model can surprise the readers with its surprising predictive power and ability to capture meaningful patterns in text data.</p>
+</section>
+<section id="bigram-model">
+<h3>Bigram model<a class="headerlink" href="#bigram-model" title="Link to this heading">#</a></h3>
+<p>A bigram model operates on fundamental premise: the probability of a word appearing in a text sequence is heavily influences by the word that preceeds it. By analyzing the large corpora of text, we can calculate the additional probabilities of a word pairs. For instance, the probability of encountering the word ‘morning’ given the preceeding word ‘good’ is relatively high</p>
+<p>Let’s illustrate this concept with an example using the following text corpus</p>
+<p>“The cat sat on the mat. The dog chased the cat”</p>
+<p><strong>1. Tokenization</strong></p>
+<ul class="simple">
+<li><p>Split the corpus into individual words: [“the”, “cat”, “sat”, “on”, “the”, “mat”, “the”, “dog”, “chased”, “the”, “cat”]</p></li>
+</ul>
+<p><strong>2. Create bi-gram pairs</strong></p>
+<ul class="simple">
+<li><p>Pair consecutive words: [(“the”, “cat”), (“cat”, “sat”), (“sat”, “on”), (“on”, “the”), (“the”, “mat”), (“mat”, “the”), (“the”, “dog”), (“dog”, “chased”), (“chased”, “the”), (“the”, “cat”)]</p></li>
+</ul>
+<p><strong>3. Calculate probabilities</strong></p>
+<ul class="simple">
+<li><p>Count the occurence of each bi-gram pair</p></li>
+<li><p>Calculate the probability of second word given the first word
+e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>$</p></li>
+</ul>
+</section>
+<section id="pytorch-implementation">
+<h3>Pytorch implementation<a class="headerlink" href="#pytorch-implementation" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;the cat sat on the mat the dog chased the cat&quot;</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+<span class="n">word_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">)}</span>
+
+<span class="c1"># Build bi-gram matrix (replace with actual count calculations)</span>
+<span class="n">bigram_counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">bigram_counts</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">word_to_idx</span><span class="p">[</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Normalize to get probabilities</span>
+<span class="n">bigram_probs</span> <span class="o">=</span> <span class="n">bigram_counts</span> <span class="o">/</span> <span class="n">bigram_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With our bi-gram model in hand, we can now generate text</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="n">start_word</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="n">generated_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_word</span><span class="p">]</span>
+    <span class="n">current_word</span> <span class="o">=</span> <span class="n">start_word</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">next_word_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">bigram_probs</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">current_word</span><span class="p">]],</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">next_word</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">next_word_idx</span><span class="p">]</span>
+        <span class="n">generated_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_word</span><span class="p">)</span>
+        <span class="n">current_word</span> <span class="o">=</span> <span class="n">next_word</span>
+
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">generate_text</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="c1"># Example output: &quot;cat sat on the dog</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cat sat on the dog
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="limitations-enhancements">
+<h3>Limitations &amp; Enhancements<a class="headerlink" href="#limitations-enhancements" title="Link to this heading">#</a></h3>
+<p>While our bigram model demonstrates the concept, it has limitations due to its simplicity. Real-word text generation often requires more sophisticated models like Recurrent Neural Networks (RNNs) or Transformers. However the bi-gram model serves as a foundational stepping stone for understanding the underlying principles of text generation</p>
+<p>In the next section, we will delve into more advanced techniques and explore how to build upon this basic model to create more sophisticated text generation systems</p>
+</section>
+</section>
+<section id="recurrent-neural-network">
+<h2>Recurrent Neural network<a class="headerlink" href="#recurrent-neural-network" title="Link to this heading">#</a></h2>
+<p>Imagine reading a book. You don’t start from scratch with each word; you carry the context of previous sentences in your mind. RNNs emulate this behavior by maintaining a hidden state that evolves as it processes each word in a sequence. This hidden state acts as a memory, encoding information from previous time steps, allowing the model to make predictions based on both the current input and accumulated context.</p>
+<section id="a-simple-rnn-structure">
+<h3>A simple RNN structure<a class="headerlink" href="#a-simple-rnn-structure" title="Link to this heading">#</a></h3>
+<p>At its core, an RNN consists of a repeating unit (cell) that takes two inputs: the current current word and the previous hidden state. It produces two outputs: an updated hidden state and a prediction for the next word. This structure allows the RNN to process sequences of aribtrary length, making it suitable for text generation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">SimpleRNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">RNN</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">hidden</span><span class="p">):</span>
+        <span class="n">embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">output</span><span class="p">,</span> <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span><span class="p">(</span><span class="n">embedded</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">hidden</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-and-text-generation">
+<h3>Training and text generation<a class="headerlink" href="#training-and-text-generation" title="Link to this heading">#</a></h3>
+<p>Training an RNN involves feeding it sequences of text and adjusting its parameters to minimize the difference between its predictions and the actual next words. Once trained, we can generate text by providing a starting word and iteratively sampling from the model’s output distribution.</p>
+</section>
+<section id="attention-mechanism-focus-where-it-matters">
+<h3>Attention Mechanism: Focus where it matters<a class="headerlink" href="#attention-mechanism-focus-where-it-matters" title="Link to this heading">#</a></h3>
+<p>A crucial enhancement to RNNs is the attention mechanism. In text generation, not all parts of the input sequence are equally important for predicting the next word. Attention allows the model to focus on relevant parts of the input while making predictions. It’s like shining a spotlight on specific words or phrases that are most informative for the current context.</p>
+<p>Huggingface models need a config object to instantiate the parameters of the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AttentionConfig</span><span class="p">(</span><span class="n">PretrainedConfig</span><span class="p">):</span>
+    <span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;custom_attention&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="mi">50257</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">124</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we define our RNN model with attention. Attentions works by allowing a model to focus on different parts of its input based on the relevance of each part to the task at hand. In essence, it dynamically weights the input elements to emphasize the most important ones for the current context.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Attention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_dim</span><span class="p">,</span> <span class="n">key_dim</span><span class="p">,</span> <span class="n">value_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">query_dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="c1">#query = query.unsqueeze(1)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">attention</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">attention</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attention</span><span class="o">.</span><span class="n">mul_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">weighted_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">attention</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attention</span><span class="p">,</span> <span class="n">weighted_values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Forward Pass</strong></p>
+<p>This defines the core functionality of the attention module, how it processes input during model’s forward pass. It takes three input tensors:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code> : Query vector ( what model is looking for )</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keys</span></code> : A set of key vectors ( what model can attend to )</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">values</span></code> : The values associated with each key. ( what model will retrieve )</p></li>
+</ul>
+<p>The attention mechanism works like a spotlight that helps a computer model focus on the most important parts of its input.</p>
+<ul class="simple">
+<li><p>First, it measures how closely a “query” (what the model is looking for) matches different “keys” (the parts of the input it can focus on). This gives us a bunch of scores.</p></li>
+<li><p>Next, these scores are turned into probabilities, making sure they add up to one.  These probabilities show how much the model should focus on each key.</p></li>
+<li><p>Then, the model combines information from each key, but gives more weight to the keys with higher probabilities. This is like putting a stronger spotlight on the more relevant parts.</p></li>
+</ul>
+<p>Finally, the model outputs both these weighted values (the information it focused on) and the probabilities themselves, so we can see what the model considered important.</p>
+<p><strong>&lt;TODO: Add diagram&gt;</strong></p>
+<p>Here is the model definition for RNN with self attention mechanism.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RNNWithAttention</span><span class="p">(</span><span class="n">PreTrainedModel</span><span class="p">):</span>
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">AttentionConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">RNN</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention</span> <span class="o">=</span> <span class="n">Attention</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_length</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+
+        <span class="n">rnn_output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span><span class="p">(</span><span class="n">embedded</span><span class="p">)</span>
+        <span class="n">outputs</span><span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">attention</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seq_length</span><span class="p">):</span>
+            <span class="c1"># get current hidden state</span>
+            <span class="n">hidden</span> <span class="o">=</span> <span class="n">rnn_output</span><span class="p">[:,</span> <span class="n">t</span><span class="p">,:]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [Bx1xH]</span>
+
+            <span class="c1"># apply attention</span>
+            <span class="n">attention</span><span class="p">,</span> <span class="n">weighted_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attention</span><span class="p">(</span>
+                    <span class="n">hidden</span><span class="p">,</span>
+                    <span class="n">rnn_output</span><span class="p">[:,:</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,:],</span>
+                    <span class="n">rnn_output</span><span class="p">[:,:</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,:]</span>
+            <span class="p">)</span>
+
+            <span class="c1"># generate output</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">weighted_value</span><span class="p">)</span>
+            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">loss_fct</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+            <span class="n">shift_logits</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[</span><span class="o">...</span><span class="p">,:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+            <span class="n">shift_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fct</span><span class="p">(</span><span class="n">shift_logits</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">shift_logits</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">shift_labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">CausalLMOutputWithCrossAttentions</span><span class="p">(</span>
+            <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+            <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span>
+            <span class="n">attentions</span><span class="o">=</span><span class="n">attention</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">prepare_inputs_for_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">past</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">input_ids</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">manual_generate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">input_text</span><span class="p">,</span> 
+            <span class="n">tokenizer</span><span class="p">,</span> 
+            <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Generates text based on the provided input.</span>
+<span class="sd">    </span>
+<span class="sd">            Args:</span>
+<span class="sd">                input_text (str): The initial text to start generation from.</span>
+<span class="sd">                tokenizer: The HuggingFace tokenizer for the model&#39;s vocabulary.</span>
+<span class="sd">                max_length (int, optional): The maximum length of generated text. Defaults to 50.</span>
+<span class="sd">                temperature (float, optional): Controls the randomness of the generated text. </span>
+<span class="sd">                    Higher values make the output more random. Defaults to 1.0.</span>
+<span class="sd">    </span>
+<span class="sd">            Returns:</span>
+<span class="sd">                str: The generated text sequence.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+    
+            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">input_text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    
+            <span class="n">generated_sequence</span> <span class="o">=</span> <span class="n">input_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">generated_sequence</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                    <span class="n">logits</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">logits</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">temperature</span> 
+                    <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">next_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">generated_sequence</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">generated_sequence</span><span class="p">,</span> <span class="n">next_token</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+            <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">generated_sequence</span><span class="p">,</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_reorder_cache</span><span class="p">(</span><span class="n">past</span><span class="p">,</span> <span class="n">beam_idx</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">past</span>
+        
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training">
+<h3>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h3>
+<p>To train our model on the intricacies of language, we’ll leverage the powerful Hugging Face Trainer API. We’ll use a publicly available dataset containing wikipedia articles. This is usually a dump of all the articles made on a specific date. Our goal is to learn the language structure with RNN</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load and preprocess the dataset</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;wikitext&quot;</span><span class="p">,</span> <span class="s2">&quot;wikitext-2-raw-v1&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To tokenize, we will use <code class="docutils literal notranslate"><span class="pre">Huggingface</span> <span class="pre">Tokenizers</span></code>. This knows how to parse the raw text and convert it into tokens.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tokenize_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+
+
+<span class="n">tokenized_datasets</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">tokenize_function</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_proc</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+                     <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is huggingface specific. We need to create config for each model to train. This config contains model parameters to be used for initialization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the model and configure training</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">AttentionConfig</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">RNNWithAttention</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;./results&quot;</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">logging_dir</span><span class="o">=</span><span class="s2">&quot;./logs&quot;</span><span class="p">,</span>
+    <span class="c1">#gradient_checkpointing=True,</span>
+    <span class="n">fp16</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span>
+    <span class="n">optim</span><span class="o">=</span><span class="s2">&quot;adafactor&quot;</span>
+    
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the Trainer</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="n">training_args</span><span class="p">,</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">],</span>
+    <span class="n">eval_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">&quot;validation&quot;</span><span class="p">],</span>
+    <span class="n">data_collator</span><span class="o">=</span><span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">mlm</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train the model</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+    <div>
+      
+      <progress value='2870' max='2870' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [2870/2870 07:41, Epoch 10/10]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Step</th>
+      <th>Training Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100</td>
+      <td>5.046100</td>
+    </tr>
+    <tr>
+      <td>200</td>
+      <td>5.247000</td>
+    </tr>
+    <tr>
+      <td>300</td>
+      <td>5.169800</td>
+    </tr>
+    <tr>
+      <td>400</td>
+      <td>4.918200</td>
+    </tr>
+    <tr>
+      <td>500</td>
+      <td>5.003900</td>
+    </tr>
+    <tr>
+      <td>600</td>
+      <td>4.905400</td>
+    </tr>
+    <tr>
+      <td>700</td>
+      <td>4.645400</td>
+    </tr>
+    <tr>
+      <td>800</td>
+      <td>4.758800</td>
+    </tr>
+    <tr>
+      <td>900</td>
+      <td>4.631000</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>4.449500</td>
+    </tr>
+    <tr>
+      <td>1100</td>
+      <td>4.537300</td>
+    </tr>
+    <tr>
+      <td>1200</td>
+      <td>4.368400</td>
+    </tr>
+    <tr>
+      <td>1300</td>
+      <td>4.279100</td>
+    </tr>
+    <tr>
+      <td>1400</td>
+      <td>4.356300</td>
+    </tr>
+    <tr>
+      <td>1500</td>
+      <td>4.164800</td>
+    </tr>
+    <tr>
+      <td>1600</td>
+      <td>4.120800</td>
+    </tr>
+    <tr>
+      <td>1700</td>
+      <td>4.198600</td>
+    </tr>
+    <tr>
+      <td>1800</td>
+      <td>3.992700</td>
+    </tr>
+    <tr>
+      <td>1900</td>
+      <td>3.997100</td>
+    </tr>
+    <tr>
+      <td>2000</td>
+      <td>4.038100</td>
+    </tr>
+    <tr>
+      <td>2100</td>
+      <td>3.833600</td>
+    </tr>
+    <tr>
+      <td>2200</td>
+      <td>3.869300</td>
+    </tr>
+    <tr>
+      <td>2300</td>
+      <td>3.901300</td>
+    </tr>
+    <tr>
+      <td>2400</td>
+      <td>3.720400</td>
+    </tr>
+    <tr>
+      <td>2500</td>
+      <td>3.758200</td>
+    </tr>
+    <tr>
+      <td>2600</td>
+      <td>3.758200</td>
+    </tr>
+    <tr>
+      <td>2700</td>
+      <td>3.648400</td>
+    </tr>
+    <tr>
+      <td>2800</td>
+      <td>3.653100</td>
+    </tr>
+  </tbody>
+</table><p></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TrainOutput(global_step=2870, training_loss=4.304410098404834, metrics={&#39;train_runtime&#39;: 462.0655, &#39;train_samples_per_second&#39;: 794.649, &#39;train_steps_per_second&#39;: 6.211, &#39;total_flos&#39;: 1780264886400000.0, &#39;train_loss&#39;: 4.304410098404834, &#39;epoch&#39;: 10.0})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="s1">&#39;bin/model_128_006&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">RNNWithAttention</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;bin/model_128_006&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="generation">
+<h1>Generation<a class="headerlink" href="#generation" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">pipeline</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generated_texts</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">manual_generate</span><span class="p">(</span>
+    <span class="s2">&quot;The quick brown fox&quot;</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">generated_texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The quick brown fox, the long @-@ brick terrace, Ders conceded varsity coach. He did this lives, as well asigned and roll, microorganisms, specifically females leave the term F @-@ for death in a Comedy Series, in the United States&#39;s appointment at Artistsers, John photography Blues Lane – a daughter and Co @-@ nation tropes often referred to as the mainchandised Princess aviation, and had to purchase a heavier solution will to rarity with
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generate_text</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="s2">&quot;text-generation&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The model &#39;RNNWithAttention&#39; is not supported for text-generation. Supported models are [&#39;BartForCausalLM&#39;, &#39;BertLMHeadModel&#39;, &#39;BertGenerationDecoder&#39;, &#39;BigBirdForCausalLM&#39;, &#39;BigBirdPegasusForCausalLM&#39;, &#39;BioGptForCausalLM&#39;, &#39;BlenderbotForCausalLM&#39;, &#39;BlenderbotSmallForCausalLM&#39;, &#39;BloomForCausalLM&#39;, &#39;CamembertForCausalLM&#39;, &#39;LlamaForCausalLM&#39;, &#39;CodeGenForCausalLM&#39;, &#39;CohereForCausalLM&#39;, &#39;CpmAntForCausalLM&#39;, &#39;CTRLLMHeadModel&#39;, &#39;Data2VecTextForCausalLM&#39;, &#39;DbrxForCausalLM&#39;, &#39;ElectraForCausalLM&#39;, &#39;ErnieForCausalLM&#39;, &#39;FalconForCausalLM&#39;, &#39;FuyuForCausalLM&#39;, &#39;GemmaForCausalLM&#39;, &#39;GitForCausalLM&#39;, &#39;GPT2LMHeadModel&#39;, &#39;GPT2LMHeadModel&#39;, &#39;GPTBigCodeForCausalLM&#39;, &#39;GPTNeoForCausalLM&#39;, &#39;GPTNeoXForCausalLM&#39;, &#39;GPTNeoXJapaneseForCausalLM&#39;, &#39;GPTJForCausalLM&#39;, &#39;JambaForCausalLM&#39;, &#39;JetMoeForCausalLM&#39;, &#39;LlamaForCausalLM&#39;, &#39;MambaForCausalLM&#39;, &#39;MarianForCausalLM&#39;, &#39;MBartForCausalLM&#39;, &#39;MegaForCausalLM&#39;, &#39;MegatronBertForCausalLM&#39;, &#39;MistralForCausalLM&#39;, &#39;MixtralForCausalLM&#39;, &#39;MptForCausalLM&#39;, &#39;MusicgenForCausalLM&#39;, &#39;MusicgenMelodyForCausalLM&#39;, &#39;MvpForCausalLM&#39;, &#39;OlmoForCausalLM&#39;, &#39;OpenLlamaForCausalLM&#39;, &#39;OpenAIGPTLMHeadModel&#39;, &#39;OPTForCausalLM&#39;, &#39;PegasusForCausalLM&#39;, &#39;PersimmonForCausalLM&#39;, &#39;PhiForCausalLM&#39;, &#39;Phi3ForCausalLM&#39;, &#39;PLBartForCausalLM&#39;, &#39;ProphetNetForCausalLM&#39;, &#39;QDQBertLMHeadModel&#39;, &#39;Qwen2ForCausalLM&#39;, &#39;Qwen2MoeForCausalLM&#39;, &#39;RecurrentGemmaForCausalLM&#39;, &#39;ReformerModelWithLMHead&#39;, &#39;RemBertForCausalLM&#39;, &#39;RobertaForCausalLM&#39;, &#39;RobertaPreLayerNormForCausalLM&#39;, &#39;RoCBertForCausalLM&#39;, &#39;RoFormerForCausalLM&#39;, &#39;RwkvForCausalLM&#39;, &#39;Speech2Text2ForCausalLM&#39;, &#39;StableLmForCausalLM&#39;, &#39;Starcoder2ForCausalLM&#39;, &#39;TransfoXLLMHeadModel&#39;, &#39;TrOCRForCausalLM&#39;, &#39;WhisperForCausalLM&#39;, &#39;XGLMForCausalLM&#39;, &#39;XLMWithLMHeadModel&#39;, &#39;XLMProphetNetForCausalLM&#39;, &#39;XLMRobertaForCausalLM&#39;, &#39;XLMRobertaXLForCausalLM&#39;, &#39;XLNetLMHeadModel&#39;, &#39;XmodForCausalLM&#39;].
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate text</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">generate_text</span><span class="p">(</span><span class="s2">&quot;The quick brown fox&quot;</span><span class="p">,</span> <span class="n">max_length</span> <span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">top_k</span> <span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The quick brown foxes, although the wild of the prerogative is usually harmful to the consumption of &quot; Like the song &quot; the &quot; best @-@ pop song &quot;, and &quot; Ode to Psyche &quot;, which &quot;, she has
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_f</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_f</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;eval_loss&#39;: 6.330234527587891,
+ &#39;eval_runtime&#39;: 1.4481,
+ &#39;eval_samples_per_second&#39;: 2596.464,
+ &#39;eval_steps_per_second&#39;: 20.716,
+ &#39;epoch&#39;: 10.0}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perplexity_f</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">eval_f</span><span class="p">[</span><span class="s1">&#39;eval_loss&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perplexity_f</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>561.2882159892837
+</pre></div>
+</div>
+</div>
+</div>
+<section id="transformer-architecture">
+<h2>Transformer: Architecture<a class="headerlink" href="#transformer-architecture" title="Link to this heading">#</a></h2>
+<p>In earlier section, we saw simple RNN model struggling to learn the language but attention model gave a high boost to the language model. There are few drawbacks of RNN with self attention as mentioned below:</p>
+<ul class="simple">
+<li><p><strong>Computation time</strong></p></li>
+<li><p><strong>Only one self attention head</strong></p></li>
+<li><p><strong>Vanishing gradient</strong></p></li>
+</ul>
+<p>Transformer architecture is built on RNN structures but without above flaws. It does this very cleverly by following a unique mechanism to find the recurrence relation.</p>
 </section>
 </section>
 
@@ -450,8 +1138,34 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">Outline</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Building LLAMA 3 from scratch</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapter-outline">Chapter Outline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-block">Building block</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#different-flavors-of-language-models">Different Flavors of Language Models:</a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-model">N-gram model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-gram-model-using-pytorch">Bi-gram model using pytorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bigram-model">Bigram model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-implementation">Pytorch implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-enhancements">Limitations &amp; Enhancements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-network">Recurrent Neural network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-rnn-structure">A simple RNN structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-text-generation">Training and text generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-mechanism-focus-where-it-matters">Attention Mechanism: Focus where it matters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>
