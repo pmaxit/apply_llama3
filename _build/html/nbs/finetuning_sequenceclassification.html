@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Finetuning large language models &#8212; Apply LLAMA 3</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/finetuning_sequenceclassification';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -74,28 +69,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -117,12 +107,22 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -156,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -167,9 +178,9 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../markdown.html">Markdown Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Finetuning-Large%20Language-models.html">Finetuning large language models</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Building%20LLAMA%203%20from%20scratch.html">Building LLAMA 3 from scratch</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="../src/random/batch_norm.html">Understanding BatchNorm with PyTorch Lightning: A Hands-on Tutorial</a></li>
 
@@ -191,7 +202,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -200,14 +211,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -348,9 +359,9 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -384,7 +395,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -395,19 +406,7 @@ document.write(`
 </div>
 </div>
 <section id="finetuning-large-language-models">
-<h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Permalink to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pwd</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/home/puneet/Projects/apply_llama3/nbs&#39;
-</pre></div>
-</div>
-</div>
-</div>
+<h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -450,6 +449,16 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading builder script: 100%|██████████| 4.20k/4.20k [00:00&lt;00:00, 2.44MB/s]
+Downloading readme: 100%|██████████████████| 8.07k/8.07k [00:00&lt;00:00, 13.9MB/s]
+Downloading data: 100%|████████████████████| 18.6M/18.6M [00:01&lt;00:00, 17.0MB/s]
+Downloading data: 100%|████████████████████| 1.23M/1.23M [00:00&lt;00:00, 2.16MB/s]
+Generating train split: 100%|█| 120000/120000 [00:00&lt;00:00, 1744005.43 examples/
+Generating test split: 100%|████| 7600/7600 [00:00&lt;00:00, 2224163.44 examples/s]
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -475,11 +484,12 @@ document.write(`
 <p>Data comprises a text containing article and label as the classification label.</p>
 </section>
 <section id="model">
-<h1>Model<a class="headerlink" href="#model" title="Permalink to this heading">#</a></h1>
+<h1>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h1>
 <p><strong>Model Name</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#model_name = &quot;meta-llama/Meta-Llama-3-8B&quot;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;bert-base-cased&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -516,7 +526,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
     <span class="n">model_name</span><span class="p">,</span>
     <span class="n">quantization_config</span><span class="o">=</span><span class="n">quantization_config</span><span class="p">,</span>
-    <span class="n">num_labels</span><span class="o">=</span><span class="mi">3</span>
+    <span class="n">num_labels</span><span class="o">=</span><span class="mi">4</span>
 <span class="p">)</span>
 
 <span class="n">model</span>
@@ -524,41 +534,47 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/puneet/venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-`low_cpu_mem_usage` was None, now set to True since model is quantized.
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "67287901bf7f43ca9d66d3ae0649c7cf", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of LlamaForSequenceClassification were not initialized from the model checkpoint at meta-llama/Meta-Llama-3-8B and are newly initialized: [&#39;score.weight&#39;]
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LlamaForSequenceClassification(
-  (model): LlamaModel(
-    (embed_tokens): Embedding(128256, 4096)
-    (layers): ModuleList(
-      (0-31): 32 x LlamaDecoderLayer(
-        (self_attn): LlamaSdpaAttention(
-          (q_proj): Linear4bit(in_features=4096, out_features=4096, bias=False)
-          (k_proj): Linear4bit(in_features=4096, out_features=1024, bias=False)
-          (v_proj): Linear4bit(in_features=4096, out_features=1024, bias=False)
-          (o_proj): Linear4bit(in_features=4096, out_features=4096, bias=False)
-          (rotary_emb): LlamaRotaryEmbedding()
-        )
-        (mlp): LlamaMLP(
-          (gate_proj): Linear4bit(in_features=4096, out_features=14336, bias=False)
-          (up_proj): Linear4bit(in_features=4096, out_features=14336, bias=False)
-          (down_proj): Linear4bit(in_features=14336, out_features=4096, bias=False)
-          (act_fn): SiLU()
-        )
-        (input_layernorm): LlamaRMSNorm()
-        (post_attention_layernorm): LlamaRMSNorm()
-      )
-    )
-    (norm): LlamaRMSNorm()
-  )
-  (score): Linear(in_features=4096, out_features=3, bias=False)
-)
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">model_name</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">quantization_config</span><span class="o">=</span><span class="n">quantization_config</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">num_labels</span><span class="o">=</span><span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">model</span>
+
+<span class="nn">File /opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/models/auto/auto_factory.py:563,</span> in <span class="ni">_BaseAutoModelClass.from_pretrained</span><span class="nt">(cls, pretrained_model_name_or_path, *model_args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">561</span> <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">562</span>     <span class="n">model_class</span> <span class="o">=</span> <span class="n">_get_model_class</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_mapping</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">563</span>     <span class="k">return</span> <span class="n">model_class</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">564</span>         <span class="n">pretrained_model_name_or_path</span><span class="p">,</span> <span class="o">*</span><span class="n">model_args</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">hub_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">565</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">566</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">567</span>     <span class="sa">f</span><span class="s2">&quot;Unrecognized configuration class </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s2"> for this kind of AutoModel: </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">568</span>     <span class="sa">f</span><span class="s2">&quot;Model type should be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">cls</span><span class="o">.</span><span class="n">_model_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">569</span> <span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/modeling_utils.py:3202,</span> in <span class="ni">PreTrainedModel.from_pretrained</span><span class="nt">(cls, pretrained_model_name_or_path, config, cache_dir, ignore_mismatched_sizes, force_download, local_files_only, token, revision, use_safetensors, *model_args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3199</span>     <span class="n">hf_quantizer</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">3201</span> <span class="k">if</span> <span class="n">hf_quantizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3202</span>     <span class="n">hf_quantizer</span><span class="o">.</span><span class="n">validate_environment</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">3203</span>         <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch_dtype</span><span class="p">,</span> <span class="n">from_tf</span><span class="o">=</span><span class="n">from_tf</span><span class="p">,</span> <span class="n">from_flax</span><span class="o">=</span><span class="n">from_flax</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="n">device_map</span>
+<span class="g g-Whitespace">   </span><span class="mi">3204</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3205</span>     <span class="n">torch_dtype</span> <span class="o">=</span> <span class="n">hf_quantizer</span><span class="o">.</span><span class="n">update_torch_dtype</span><span class="p">(</span><span class="n">torch_dtype</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3206</span>     <span class="n">device_map</span> <span class="o">=</span> <span class="n">hf_quantizer</span><span class="o">.</span><span class="n">update_device_map</span><span class="p">(</span><span class="n">device_map</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/torch-nightly/lib/python3.8/site-packages/transformers/quantizers/quantizer_bnb_4bit.py:62,</span> in <span class="ni">Bnb4BitHfQuantizer.validate_environment</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="k">def</span> <span class="nf">validate_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+<span class="ne">---&gt; </span><span class="mi">62</span>         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No GPU found. A GPU is needed for quantization.&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span>     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_accelerate_available</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_bitsandbytes_available</span><span class="p">()):</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span>         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span>             <span class="s2">&quot;Using `bitsandbytes` 8-bit quantization requires Accelerate: `pip install accelerate` &quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span>             <span class="s2">&quot;and the latest version of bitsandbytes: `pip install -i https://pypi.org/simple/ bitsandbytes`&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span>         <span class="p">)</span>
+
+<span class="ne">RuntimeError</span>: No GPU found. A GPU is needed for quantization.
 </pre></div>
 </div>
 </div>
@@ -691,7 +707,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </div>
 </section>
 <section id="finetuning">
-<h1>Finetuning<a class="headerlink" href="#finetuning" title="Permalink to this heading">#</a></h1>
+<h1>Finetuning<a class="headerlink" href="#finetuning" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">DataCollatorWithPadding</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
@@ -701,7 +717,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MAX_LEN</span> <span class="o">=</span> <span class="mi">512</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MAX_LEN</span> <span class="o">=</span> <span class="mi">128</span>
 <span class="n">col_to_delete</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">llama_preprocessing_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
@@ -800,90 +816,90 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 ../aten/src/ATen/native/cuda/Loss.cu:250: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [4,0,0] Assertion `t &gt;= 0 &amp;&amp; t &lt; n_classes` failed.
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
-RuntimeError                              Traceback (most recent call last)
-Cell In[21], line 11
-      1 trainer = Trainer(
-      2     model = model,
-      3     args = training_args,
-   (...)
-      8     compute_metrics = compute_metrics,
-      9 )
----&gt; 11 train_result = trainer.train()
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">21</span><span class="p">],</span> <span class="n">line</span> <span class="mi">11</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">args</span> <span class="o">=</span> <span class="n">training_args</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">compute_metrics</span> <span class="o">=</span> <span class="n">compute_metrics</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="n">train_result</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
-File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:1624, in Trainer.train(self, resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)
-   1622         hf_hub_utils.enable_progress_bars()
-   1623 else:
--&gt; 1624     return inner_training_loop(
-   1625         args=args,
-   1626         resume_from_checkpoint=resume_from_checkpoint,
-   1627         trial=trial,
-   1628         ignore_keys_for_eval=ignore_keys_for_eval,
-   1629     )
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:1624,</span> in <span class="ni">Trainer.train</span><span class="nt">(self, resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1622</span>         <span class="n">hf_hub_utils</span><span class="o">.</span><span class="n">enable_progress_bars</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1623</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1624</span>     <span class="k">return</span> <span class="n">inner_training_loop</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1625</span>         <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1626</span>         <span class="n">resume_from_checkpoint</span><span class="o">=</span><span class="n">resume_from_checkpoint</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1627</span>         <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1628</span>         <span class="n">ignore_keys_for_eval</span><span class="o">=</span><span class="n">ignore_keys_for_eval</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1629</span>     <span class="p">)</span>
 
-File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:1961, in Trainer._inner_training_loop(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)
-   1958     self.control = self.callback_handler.on_step_begin(args, self.state, self.control)
-   1960 with self.accelerator.accumulate(model):
--&gt; 1961     tr_loss_step = self.training_step(model, inputs)
-   1963 if (
-   1964     args.logging_nan_inf_filter
-   1965     and not is_torch_tpu_available()
-   1966     and (torch.isnan(tr_loss_step) or torch.isinf(tr_loss_step))
-   1967 ):
-   1968     # if loss is nan or inf simply add the average of previous logged losses
-   1969     tr_loss += tr_loss / (1 + self.state.global_step - self._globalstep_last_logged)
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:1961,</span> in <span class="ni">Trainer._inner_training_loop</span><span class="nt">(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1958</span>     <span class="bp">self</span><span class="o">.</span><span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_handler</span><span class="o">.</span><span class="n">on_step_begin</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1960</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">accelerator</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1961</span>     <span class="n">tr_loss_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_step</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1963</span> <span class="k">if</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1964</span>     <span class="n">args</span><span class="o">.</span><span class="n">logging_nan_inf_filter</span>
+<span class="g g-Whitespace">   </span><span class="mi">1965</span>     <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_torch_tpu_available</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1966</span>     <span class="ow">and</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">tr_loss_step</span><span class="p">)</span> <span class="ow">or</span> <span class="n">torch</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">tr_loss_step</span><span class="p">))</span>
+<span class="g g-Whitespace">   </span><span class="mi">1967</span> <span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1968</span>     <span class="c1"># if loss is nan or inf simply add the average of previous logged losses</span>
+<span class="g g-Whitespace">   </span><span class="mi">1969</span>     <span class="n">tr_loss</span> <span class="o">+=</span> <span class="n">tr_loss</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">global_step</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_globalstep_last_logged</span><span class="p">)</span>
 
-File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:2911, in Trainer.training_step(self, model, inputs)
-   2909         scaled_loss.backward()
-   2910 else:
--&gt; 2911     self.accelerator.backward(loss)
-   2913 return loss.detach() / self.args.gradient_accumulation_steps
+<span class="nn">File ~/venv/lib/python3.10/site-packages/transformers/trainer.py:2911,</span> in <span class="ni">Trainer.training_step</span><span class="nt">(self, model, inputs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2909</span>         <span class="n">scaled_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2910</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">2911</span>     <span class="bp">self</span><span class="o">.</span><span class="n">accelerator</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2913</span> <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">gradient_accumulation_steps</span>
 
-File ~/venv/lib/python3.10/site-packages/accelerate/accelerator.py:1966, in Accelerator.backward(self, loss, **kwargs)
-   1964     self.scaler.scale(loss).backward(**kwargs)
-   1965 else:
--&gt; 1966     loss.backward(**kwargs)
+<span class="nn">File ~/venv/lib/python3.10/site-packages/accelerate/accelerator.py:1966,</span> in <span class="ni">Accelerator.backward</span><span class="nt">(self, loss, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1964</span>     <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1965</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1966</span>     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-File ~/venv/lib/python3.10/site-packages/torch/_tensor.py:525, in Tensor.backward(self, gradient, retain_graph, create_graph, inputs)
-    515 if has_torch_function_unary(self):
-    516     return handle_torch_function(
-    517         Tensor.backward,
-    518         (self,),
-   (...)
-    523         inputs=inputs,
-    524     )
---&gt; 525 torch.autograd.backward(
-    526     self, gradient, retain_graph, create_graph, inputs=inputs
-    527 )
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/_tensor.py:525,</span> in <span class="ni">Tensor.backward</span><span class="nt">(self, gradient, retain_graph, create_graph, inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">515</span> <span class="k">if</span> <span class="n">has_torch_function_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">516</span>     <span class="k">return</span> <span class="n">handle_torch_function</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">517</span>         <span class="n">Tensor</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">518</span>         <span class="p">(</span><span class="bp">self</span><span class="p">,),</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">523</span>         <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">524</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">525</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">526</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">retain_graph</span><span class="p">,</span> <span class="n">create_graph</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span>
+<span class="g g-Whitespace">    </span><span class="mi">527</span> <span class="p">)</span>
 
-File ~/venv/lib/python3.10/site-packages/torch/autograd/__init__.py:267, in backward(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)
-    262     retain_graph = create_graph
-    264 # The reason we repeat the same comment below is that
-    265 # some Python versions print out the first line of a multi-line function
-    266 # calls in the traceback and some print out the last line
---&gt; 267 _engine_run_backward(
-    268     tensors,
-    269     grad_tensors_,
-    270     retain_graph,
-    271     create_graph,
-    272     inputs,
-    273     allow_unreachable=True,
-    274     accumulate_grad=True,
-    275 )
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/autograd/__init__.py:267,</span> in <span class="ni">backward</span><span class="nt">(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">262</span>     <span class="n">retain_graph</span> <span class="o">=</span> <span class="n">create_graph</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span> <span class="c1"># The reason we repeat the same comment below is that</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="c1"># some Python versions print out the first line of a multi-line function</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span> <span class="c1"># calls in the traceback and some print out the last line</span>
+<span class="ne">--&gt; </span><span class="mi">267</span> <span class="n">_engine_run_backward</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span>     <span class="n">tensors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>     <span class="n">grad_tensors_</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span>     <span class="n">retain_graph</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">271</span>     <span class="n">create_graph</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">272</span>     <span class="n">inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span>     <span class="n">allow_unreachable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">274</span>     <span class="n">accumulate_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">275</span> <span class="p">)</span>
 
-File ~/venv/lib/python3.10/site-packages/torch/autograd/graph.py:744, in _engine_run_backward(t_outputs, *args, **kwargs)
-    742     unregister_hooks = _register_logging_hooks_on_whole_graph(t_outputs)
-    743 try:
---&gt; 744     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-    745         t_outputs, *args, **kwargs
-    746     )  # Calls into the C++ engine to run the backward pass
-    747 finally:
-    748     if attach_logging_hooks:
+<span class="nn">File ~/venv/lib/python3.10/site-packages/torch/autograd/graph.py:744,</span> in <span class="ni">_engine_run_backward</span><span class="nt">(t_outputs, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">742</span>     <span class="n">unregister_hooks</span> <span class="o">=</span> <span class="n">_register_logging_hooks_on_whole_graph</span><span class="p">(</span><span class="n">t_outputs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">743</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">744</span>     <span class="k">return</span> <span class="n">Variable</span><span class="o">.</span><span class="n">_execution_engine</span><span class="o">.</span><span class="n">run_backward</span><span class="p">(</span>  <span class="c1"># Calls into the C++ engine to run the backward pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">745</span>         <span class="n">t_outputs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">746</span>     <span class="p">)</span>  <span class="c1"># Calls into the C++ engine to run the backward pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">747</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">748</span>     <span class="k">if</span> <span class="n">attach_logging_hooks</span><span class="p">:</span>
 
-RuntimeError: CUDA error: device-side assert triggered
-CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
-For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
-Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+<span class="ne">RuntimeError</span>: CUDA error: device-side assert triggered
+<span class="n">CUDA</span> <span class="n">kernel</span> <span class="n">errors</span> <span class="n">might</span> <span class="n">be</span> <span class="n">asynchronously</span> <span class="n">reported</span> <span class="n">at</span> <span class="n">some</span> <span class="n">other</span> <span class="n">API</span> <span class="n">call</span><span class="p">,</span> <span class="n">so</span> <span class="n">the</span> <span class="n">stacktrace</span> <span class="n">below</span> <span class="n">might</span> <span class="n">be</span> <span class="n">incorrect</span><span class="o">.</span>
+<span class="n">For</span> <span class="n">debugging</span> <span class="n">consider</span> <span class="n">passing</span> <span class="n">CUDA_LAUNCH_BLOCKING</span><span class="o">=</span><span class="mf">1.</span>
+<span class="n">Compile</span> <span class="k">with</span> <span class="err">`</span><span class="n">TORCH_USE_CUDA_DSA</span><span class="err">`</span> <span class="n">to</span> <span class="n">enable</span> <span class="n">device</span><span class="o">-</span><span class="n">side</span> <span class="n">assertions</span><span class="o">.</span>
 </pre></div>
 </div>
 </div>
@@ -917,7 +933,7 @@ Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -928,6 +944,7 @@ Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -963,7 +980,7 @@ By Puneet Girdhar & WeiPeng
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -987,8 +1004,8 @@ By Puneet Girdhar & WeiPeng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
   </footer>

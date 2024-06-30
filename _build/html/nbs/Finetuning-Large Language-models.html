@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Finetuning large language models &#8212; Apply LLAMA 3</title>
   
@@ -15,58 +14,54 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/Finetuning-Large Language-models';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Understanding BatchNorm with PyTorch Lightning: A Hands-on Tutorial" href="../src/random/batch_norm.html" />
-    <link rel="prev" title="Notebooks with MyST Markdown" href="../markdown-notebooks.html" />
+    <link rel="next" title="Building LLAMA 3 from scratch" href="Building%20LLAMA%203%20from%20scratch.html" />
+    <link rel="prev" title="Welcome to the book on applying LLAMA 3" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -76,28 +71,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -119,12 +109,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -158,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -169,9 +178,9 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../markdown.html">Markdown Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Finetuning large language models</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="Building%20LLAMA%203%20from%20scratch.html">Building LLAMA 3 from scratch</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="../src/random/batch_norm.html">Understanding BatchNorm with PyTorch Lightning: A Hands-on Tutorial</a></li>
 
@@ -193,7 +202,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -202,14 +211,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -350,9 +359,9 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -374,6 +383,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Finetuning large language models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapter-outline">Chapter Outline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification">Text Classification</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-a-dataset">Identify a dataset</a></li>
 </ul>
@@ -410,69 +420,30 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="finetuning-large-language-models">
-<h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Permalink to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#!pip install langchain langchain-community transformers bitsandbytes accelerate langchain-openai langchain evaluate langchain-together</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#importing libraries</span>
-
-<span class="kn">import</span> <span class="nn">dotenv</span><span class="o">,</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
-<span class="kn">from</span> <span class="nn">langchain_core.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span> <span class="nn">langchain_together</span> <span class="kn">import</span> <span class="n">ChatTogether</span>
-<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">langchain.output_parsers.enum</span> <span class="kn">import</span> <span class="n">EnumOutputParser</span>
-<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">debug_llm</span><span class="p">,</span> <span class="n">extract_json</span>
-
-
-
-<span class="n">dotenv</span><span class="o">.</span><span class="n">load_dotenv</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-</div>
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="finetuning-large-language-models">
+<h1>Finetuning large language models<a class="headerlink" href="#finetuning-large-language-models" title="Link to this heading">#</a></h1>
 <p>In the previous chapter, we explored the inner workings of large language models and how they can be leveraged for various tasks, such as text generation and sequence classification, through effective prompting and zero-shot capabilities. We also delved into the vast array of pre-trained models available, courtesy of the vibrant community.</p>
 <p>However, will these pre-trained models exhibit remarkable versatility, their general purpose training may not always be optimized for specific tasks or domains. Fine-tuning emerges as a crucial techique to adapt and refine a language model’s understanding to the nuances of a particular dataset or a task</p>
 <p>Consider the field of medical research, where a language model pre-trained solely on general web text may struggle to perform effectively out-of-the-box. By fine-tuning the model on a corpus of medical literature, its ability to generate relevant medical text or assist in information extraction from healthcare documents can be significantly enhanced.</p>
 <p>Conversational models present another compelling use case. As discussed earlier, large pre-trained models are primarily trained to predict the next token, which may not seamlessly translate to engaging, conversational interactions. By fine-tuning these models on datasets containing everyday conversations and informal language structures, we can adapt their outputs to emulate the natural flow and nuances of interfaces like ChatGPT.</p>
 <p>The primary objective of this chapter is to establish a solid foundation in fine-tuning large language models (LLMs). Consequently, we will delve into the following key areas:</p>
+<section id="chapter-outline">
+<h2>Chapter Outline<a class="headerlink" href="#chapter-outline" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Classifying the topic of a text using a fine-tuned encoder model</p></li>
-<li><p>Generating text in a particular style using a fine-tuned decoder model</p></li>
-<li><p>Solving multiple tasks with a single model via instruction fine-tuning</p></li>
+<li><p>Classifying the topic of a text using LLAMA 3</p></li>
+<li><p>Finetuning the classification using prompt engineering</p></li>
+<li><p>Finetuning LLAMA 3 with retraining on the dataset</p></li>
 <li><p>Parameter-efficient fine-tuning techniques that enable training on smaller GPUs</p></li>
-<li><p>Techniques for reducing computational requirements during model inference</p></li>
 </ul>
 <p>Through this comprehensive exploration, you will gain insights into tailoring language models to excel in specific tasks and domains, unleashing their true potential for a wide range of applications.</p>
+</section>
 <section id="text-classification">
-<h2>Text Classification<a class="headerlink" href="#text-classification" title="Permalink to this heading">#</a></h2>
+<h2>Text Classification<a class="headerlink" href="#text-classification" title="Link to this heading">#</a></h2>
 <p>As we discussed in earlier chapters, LLMs are generally used for generative tasks where task is to predict the next token. Other NLP tasks such as text classification, named entity recognition might not be represented easily with the default objective. Here we will see an example of using LLMs for text classification and then further finetuning to improve the metrics.</p>
 <section id="identify-a-dataset">
-<h3>Identify a dataset<a class="headerlink" href="#identify-a-dataset" title="Permalink to this heading">#</a></h3>
+<h3>Identify a dataset<a class="headerlink" href="#identify-a-dataset" title="Link to this heading">#</a></h3>
 <p>Let’s pick publicly available dataset to demonstrate the technique. Here we’ll use AG news dataset, a well known non-commercial dataset used for benchmarking text classification models and researching data mining, information retrieval and data streaming.</p>
 <p>Here, we will explore the dataset to know about the text and labels. The dataset provides 120,000 training examples, more than enough data to fine-tune a model with 4 classification labels. Fine-tuning requires very little data compared to pre-training a model and just using few thousand examples should enough to get a good baseline model.</p>
 <div class="cell tag_hide-input docutils container">
@@ -524,7 +495,7 @@ document.write(`
 </section>
 </section>
 <section id="prompt-engineering">
-<h2>Prompt Engineering<a class="headerlink" href="#prompt-engineering" title="Permalink to this heading">#</a></h2>
+<h2>Prompt Engineering<a class="headerlink" href="#prompt-engineering" title="Link to this heading">#</a></h2>
 <p>Let’s look at zero-shot capability of large language models (LLMs) where they can perform a task without explicit training data for that specific task.</p>
 <p>We first need to create a dictionary <code class="docutils literal notranslate"><span class="pre">id_to_label</span></code> that maps the lowercase label names to their corresponding integer labels.</p>
 <p>Finally, we modify the dictionary <code class="docutils literal notranslate"><span class="pre">id_to_label</span></code> to expand the <code class="docutils literal notranslate"><span class="pre">sci/tech</span></code> label. This is useful since LLM might be trained with full words rather than abbrevations. We should try to be close to the initial vocabulary.</p>
@@ -603,13 +574,6 @@ dtype: object
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#tagging_prompt.format(inputs=enumerate(inputs), examples=zip(samples[&#39;text&#39;],samples[&#39;str_label&#39;]), count=len(inputs))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">langchain.output_parsers</span> <span class="kn">import</span> <span class="n">PydanticOutputParser</span>
 
@@ -685,7 +649,7 @@ dtype: object
 <p>This creates a langchain object which parses the input string in above template, pass it to LLM , result is the passed to Parser which knows how to extract json from the text and convert it into a <code class="docutils literal notranslate"><span class="pre">Pydantic</span></code> class.</p>
 </section>
 <section id="invoking-the-llm-for-text-classification">
-<h2>Invoking the LLM for text classification<a class="headerlink" href="#invoking-the-llm-for-text-classification" title="Permalink to this heading">#</a></h2>
+<h2>Invoking the LLM for text classification<a class="headerlink" href="#invoking-the-llm-for-text-classification" title="Link to this heading">#</a></h2>
 <p>Here, we invoke the LLM for text classification using <code class="docutils literal notranslate"><span class="pre">tagging_chain</span></code> we created earlier. First, we prepare 5 random articles for which we want to get the labels. It is the passed to LLM with formatting instructions. Remember, we need output in json format so that it can be automatically parsed by <code class="docutils literal notranslate"><span class="pre">Pydantic</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -775,7 +739,7 @@ dtype: object
 <script type="application/vnd.jupyter.widget-view+json">{"model_id": "6ae97a35e5c84b9384bbbfaaf69a1265", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <section id="evaluation">
-<h3>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this heading">#</a></h3>
+<h3>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h3>
 <p>Let’s evaluate the model with accuracy metrics. This will show how many of the responses are correct.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -797,7 +761,7 @@ dtype: object
 </section>
 </section>
 <section id="few-shot-prompt-engineering">
-<h2>Few shot prompt engineering<a class="headerlink" href="#few-shot-prompt-engineering" title="Permalink to this heading">#</a></h2>
+<h2>Few shot prompt engineering<a class="headerlink" href="#few-shot-prompt-engineering" title="Link to this heading">#</a></h2>
 <p>Above we worked on text classification without providing any help to the model. Few shot engineering refers to the step where we provide certain examples to the model to help in the response. In the prompt below, we provde placeholder for examples. These are extracted from <code class="docutils literal notranslate"><span class="pre">train</span></code> split of dataset to make sure we don’t cheat with our test dataset. We group records by labels and extract 10 examples from each label ( world, sci/tech, sports, business ]. Let’s oberve what effect it can have on the accuracy</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -883,7 +847,7 @@ dtype: object
 <script type="application/vnd.jupyter.widget-view+json">{"model_id": "ae210936d86e405c990e5bca120369e4", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <section id="id1">
-<h3>Evaluation<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3>Evaluation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>Let’s evaluate the model again with accuracy metrics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -897,7 +861,7 @@ dtype: object
 <p>Accuracy jumped to 87.5% . It shows that additional information helps LLM in text classification. We can further finetune the prompt by adding more examples as context window allows it, negative examples , hard negative examples and so on. Iterating on prompts is an art itself and LLM allows it to modify and see the impact instantly.</p>
 </section>
 <section id="tasks">
-<h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading">#</a></h3>
+<h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>Try improving the accuracy by adding negative examples. Use <code class="docutils literal notranslate"><span class="pre">##Negative</span> <span class="pre">examples</span></code> as the header and obtain examples from a validation set( not shown here ).</p></li>
 <li><p>Checkout out <code class="docutils literal notranslate"><span class="pre">dspy</span></code> package which allows to iteratively optimize the prompt based on an objective.</p></li>
@@ -906,7 +870,7 @@ dtype: object
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="finetuning-the-model">
-<h1>Finetuning the model<a class="headerlink" href="#finetuning-the-model" title="Permalink to this heading">#</a></h1>
+<h1>Finetuning the model<a class="headerlink" href="#finetuning-the-model" title="Link to this heading">#</a></h1>
 <p>After going through few prompt engineering models and understanding the impact, We will now move towards finetuning the model. This will ensure improvement in accuracy with the cost of computation.</p>
 <p>There are two main approaches to fine-tuning large language models (LLMs) for text classification tasks.</p>
 <ol class="arabic simple">
@@ -929,7 +893,7 @@ dtype: object
 <li><p>Multi-task learning involves training a single model on multiple related tasks simultaneously, allowing the model to learn shared representations and benefit from task synergies.</p></li>
 </ul>
 <section id="transfer-learning">
-<h2>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Permalink to this heading">#</a></h2>
+<h2>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Link to this heading">#</a></h2>
 <p>In above methods, we used online API to call the LLM , generate the output and parse the results into the desired format. Let’s see how we can fine-tune LLAMA 3 model for a text classification task</p>
 <p>There are again two ways to finetune the LLAMA 3 model.</p>
 <ol class="arabic simple">
@@ -940,12 +904,12 @@ dtype: object
 <p>We need to first download and prepare model for training. Most of the time, we don’t have enough resources to work on 70b model ( estimated GPU size required &gt; 48GB ), hence we use quantized model</p>
 </section>
 <section id="background">
-<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">#</a></h2>
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
 <p>Imagine teaching a dog a new trick after it’s already mastered basic commands. You’re not starting from zero; you’re building on existing knowledge. Similarly, transfer learning involves taking a pre-trained language model, often trained on massive datasets like Wikipedia or the entirety of the internet, and fine-tuning it on a smaller, task-specific dataset. This way, we can inherit the general language understanding of the pre-trained model and adapt it to excel at a particular task like sentiment analysis or text summarization.</p>
 <p>The process of <strong>fine-tuning</strong> a large language model involves adapting its weights and biases using your specific dataset. This is typically done by continuing the training process on your new data, but with a lower learning rate. Think of it as a gentle nudge in the right direction, refining the model’s existing knowledge to align with your task.</p>
 </section>
 <section id="quantization-shrinking-the-giants">
-<h2>Quantization: Shrinking the giants<a class="headerlink" href="#quantization-shrinking-the-giants" title="Permalink to this heading">#</a></h2>
+<h2>Quantization: Shrinking the giants<a class="headerlink" href="#quantization-shrinking-the-giants" title="Link to this heading">#</a></h2>
 <p>While transfer learning saves us from training a model from scratch, large language models are still resource-intensive. That’s where quantization comes in. Quantization is a technique to reduce the model’s size and memory requirements by representing its parameters (weights and biases) using lower precision data types.</p>
 <p>Here’s how the code demonstrates quantization:</p>
 <div class="cell docutils container">
@@ -982,7 +946,7 @@ dtype: object
 <p>By applying quantization, we can significantly reduce the model’s size and memory footprint, making it more accessible for deployment on resource-constrained devices.</p>
 </section>
 <section id="lora-adapters">
-<h2>Lora Adapters<a class="headerlink" href="#lora-adapters" title="Permalink to this heading">#</a></h2>
+<h2>Lora Adapters<a class="headerlink" href="#lora-adapters" title="Link to this heading">#</a></h2>
 <p>LoRA (Low-Rank Adaptation) is a technique designed to make fine-tuning large language models even more efficient. Instead of updating all the model’s parameters, LoRA focuses on a small set of new parameters introduced into specific layers of the model.</p>
 <p>The provided code showcases the LoRA configuration:</p>
 <div class="cell docutils container">
@@ -1014,7 +978,7 @@ dtype: object
 <p>The <code class="docutils literal notranslate"><span class="pre">prepare_model_for_kbit_training</span></code> function optimizes the model for efficient training, and <code class="docutils literal notranslate"><span class="pre">get_peft_model</span></code> applies the LoRA configuration.</p>
 </section>
 <section id="training">
-<h2>Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
+<h2>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
 <p>Below code finetunes the model for news classification task. Please note, it takes more than 24 hours to train LLAMA3 7B model even after quantization and rquires atleast 24GB of VRAM. It shows how big the models are.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1073,9 +1037,9 @@ The cache for model files in Transformers v4.22.0 has been updated. Migrating yo
 </div>
 </section>
 <section id="comparison">
-<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">#</a></h2>
+<h2>Comparison<a class="headerlink" href="#comparison" title="Link to this heading">#</a></h2>
 <p>The choice of fine-tuning approach depends on the delicate balance between data availability, computational resources, and desired performance. Zero-shot learning offers a rapid and inexpensive option, but its performance is often suboptimal. Few-shot learning strikes a middle ground, providing a boost in performance with minimal data. Full fine-tuning, while resource-intensive, generally leads to the highest performance but requires substantial data.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Approach</p></th>
 <th class="head"><p>Data Requirements</p></th>
@@ -1109,9 +1073,10 @@ The cache for model files in Transformers v4.22.0 has been updated. Migrating yo
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Text classification using large language models</p></li>
 </ul>
@@ -1146,24 +1111,24 @@ The cache for model files in Transformers v4.22.0 has been updated. Migrating yo
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../markdown-notebooks.html"
+       href="../intro.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Notebooks with MyST Markdown</p>
+        <p class="prev-next-title">Welcome to the book on applying LLAMA 3</p>
       </div>
     </a>
     <a class="right-next"
-       href="../src/random/batch_norm.html"
+       href="Building%20LLAMA%203%20from%20scratch.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Understanding BatchNorm with PyTorch Lightning: A Hands-on Tutorial</p>
+        <p class="prev-next-title">Building LLAMA 3 from scratch</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1176,6 +1141,7 @@ The cache for model files in Transformers v4.22.0 has been updated. Migrating yo
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -1183,6 +1149,7 @@ The cache for model files in Transformers v4.22.0 has been updated. Migrating yo
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Finetuning large language models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chapter-outline">Chapter Outline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification">Text Classification</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-a-dataset">Identify a dataset</a></li>
 </ul>
@@ -1234,7 +1201,7 @@ By Puneet Girdhar & WeiPeng
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -1258,8 +1225,8 @@ By Puneet Girdhar & WeiPeng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
   </footer>
