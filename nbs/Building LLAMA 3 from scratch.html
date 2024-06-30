@@ -395,6 +395,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-model">N-gram model</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-gram-model-using-pytorch">Bi-gram model using pytorch</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bigram-model">Bigram model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-implementation">Pytorch implementation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-enhancements">Limitations &amp; Enhancements</a></li>
 </ul>
@@ -502,24 +503,44 @@ document.write(`
 e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>$</p></li>
 </ul>
 </section>
+<section id="dataset">
+<h3>Dataset<a class="headerlink" href="#dataset" title="Link to this heading">#</a></h3>
+<p>To train our language model, we will work on wikipedia dataset. In the following section, we will download the raw wikitext, tokenize it and prepare for training</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># Load the Wikitext dataset (this might take a while for the first download)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;wikitext&quot;</span><span class="p">,</span> <span class="s2">&quot;wikitext-2-raw-v1&quot;</span><span class="p">)</span>
+
+<span class="c1"># Preprocessing function to tokenize the text</span>
+<span class="k">def</span> <span class="nf">tokenize_function</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]]}</span>
+
+<span class="c1"># Apply the preprocessing function</span>
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">tokenize_function</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="pytorch-implementation">
 <h3>Pytorch implementation<a class="headerlink" href="#pytorch-implementation" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine all tokens for vocabulary and matrix construction</span>
+<span class="n">all_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">tokenized_dataset</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
 
-<span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;the cat sat on the mat the dog chased the cat&quot;</span>
-<span class="n">words</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-<span class="n">vocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_tokens</span><span class="p">))</span>
 <span class="n">word_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">)}</span>
 
-<span class="c1"># Build bi-gram matrix (replace with actual count calculations)</span>
-<span class="n">bigram_counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)))</span>
+<span class="n">bigram_counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)))</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">bigram_counts</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">word_to_idx</span><span class="p">[</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">tokenized_dataset</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">bigram_counts</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">word_to_idx</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<span class="c1"># Normalize to get probabilities</span>
 <span class="n">bigram_probs</span> <span class="o">=</span> <span class="n">bigram_counts</span> <span class="o">/</span> <span class="n">bigram_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -528,30 +549,129 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
 <p>With our bi-gram model in hand, we can now generate text</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BigramModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab</span><span class="p">,</span> <span class="n">bigram_probs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="o">=</span> <span class="n">vocab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bigram_probs</span> <span class="o">=</span> <span class="n">bigram_probs</span>
 
-<span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="n">start_word</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
-    <span class="n">generated_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_word</span><span class="p">]</span>
-    <span class="n">current_word</span> <span class="o">=</span> <span class="n">start_word</span>
+    <span class="k">def</span> <span class="nf">calculate_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">):</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Initial probability</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>  <span class="c1"># Ensure case-insensitivity</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span> <span class="ow">and</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+                <span class="n">prob</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bigram_probs</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Handle unknown words (you can use smoothing techniques like add-1)</span>
+                <span class="n">prob</span> <span class="o">*=</span> <span class="mf">1e-8</span>  <span class="c1"># A small probability for unseen bigrams</span>
+        <span class="k">return</span> <span class="n">prob</span>
 
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">next_word_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">bigram_probs</span><span class="p">[</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">current_word</span><span class="p">]],</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="n">next_word</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">next_word_idx</span><span class="p">]</span>
-        <span class="n">generated_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_word</span><span class="p">)</span>
-        <span class="n">current_word</span> <span class="o">=</span> <span class="n">next_word</span>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_word</span><span class="o">=</span><span class="s2">&quot;the&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">generated_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_word</span><span class="p">]</span>
+        <span class="n">current_word</span> <span class="o">=</span> <span class="n">start_word</span>
 
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">current_word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+                <span class="c1"># If the word isn&#39;t in the vocabulary, end the generation</span>
+                <span class="k">break</span> 
+            <span class="n">next_word_probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bigram_probs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_word</span><span class="p">)]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">generate_text</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="c1"># Example output: &quot;cat sat on the dog</span>
+            <span class="c1"># Sample the next word based on probabilities</span>
+            <span class="n">next_word_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">next_word_probs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">next_word</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="n">next_word_idx</span><span class="p">]</span>
+            <span class="n">generated_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_word</span><span class="p">)</span>
+            <span class="n">current_word</span> <span class="o">=</span> <span class="n">next_word</span>  <span class="c1"># Update the current word for the next step</span>
+
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
+
+<span class="c1"># Create an instance of the BigramModel</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">BigramModel</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">bigram_probs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use this model to generate a sentence. Generate method does the following:</p>
+<p>It iterates up to <code class="docutils literal notranslate"><span class="pre">max_length</span> <span class="pre">-</span> <span class="pre">1</span></code> times (since we already have the start word).
+Inside the loop:</p>
+<ul class="simple">
+<li><p>If the current_word isn’t in the vocabulary, it stops generating (you could handle this differently, e.g., by choosing a random word from the vocabulary).</p></li>
+<li><p>It retrieves the bigram probabilities for the next word, given the current_word.</p></li>
+<li><p>It uses torch.multinomial to sample the next word’s index based on the probabilities. This ensures words with higher probabilities are more likely to be chosen.</p></li>
+<li><p>The chosen word is added to generated_text, and current_word is updated.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cat sat on the dog
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;the kerrie oedjang evangelical fhíachrach hersey marine poltaratskyi aitai westerlies dilation convalescence elected gamely eales carlaeon inglés marceline declines pictland&#39;
 </pre></div>
 </div>
 </div>
 </div>
+<p>We can also use this model to generate the probability of a sentence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sentence1</span> <span class="o">=</span> <span class="s2">&quot;the cat sat on the mat&quot;</span>
+<span class="n">sentence2</span> <span class="o">=</span> <span class="s2">&quot;the cat jumped over the moon&quot;</span>
+
+<span class="n">prob1</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">calculate_probability</span><span class="p">(</span><span class="n">sentence1</span><span class="p">)</span>
+<span class="n">prob2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">calculate_probability</span><span class="p">(</span><span class="n">sentence2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probability of &#39;</span><span class="si">{</span><span class="n">sentence1</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">prob1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probability of &#39;</span><span class="si">{</span><span class="n">sentence2</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">prob2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Probability of &#39;the cat sat on the mat&#39;: 9.656807616385803e-20
+Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_perplexity</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="n">total_log_prob</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_tokens</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]:</span>
+        <span class="n">sentence_log_prob</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">vocab</span> <span class="ow">and</span> <span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+                <span class="n">sentence_log_prob</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+                    <span class="n">model</span><span class="o">.</span><span class="n">bigram_probs</span><span class="p">[</span>
+                        <span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Handle unknown words (using add-1 smoothing)</span>
+                <span class="n">sentence_log_prob</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">))</span>
+        <span class="n">total_log_prob</span> <span class="o">+=</span> <span class="n">sentence_log_prob</span>
+        <span class="n">num_tokens</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Subtract 1 for the last token in each sentence</span>
+    <span class="n">perplexity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">total_log_prob</span> <span class="o">/</span> <span class="n">num_tokens</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">perplexity</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perplexity</span> <span class="o">=</span> <span class="n">calculate_perplexity</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenized_dataset</span><span class="p">[</span><span class="s2">&quot;validation&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Perplexity on the validation set: </span><span class="si">{</span><span class="n">perplexity</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Perplexity on the validation set: 9393.72
+</pre></div>
+</div>
+</div>
+</div>
+<p>Perplexity of the model is quite high. Let’s see if we can improve using RNN</p>
 </section>
 <section id="limitations-enhancements">
 <h3>Limitations &amp; Enhancements<a class="headerlink" href="#limitations-enhancements" title="Link to this heading">#</a></h3>
@@ -814,146 +934,8 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
     <span class="n">eval_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">&quot;validation&quot;</span><span class="p">],</span>
     <span class="n">data_collator</span><span class="o">=</span><span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">mlm</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train the model</span>
+
 <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html">
-    <div>
-      
-      <progress value='2870' max='2870' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      [2870/2870 07:41, Epoch 10/10]
-    </div>
-    <table border="1" class="dataframe">
-  <thead>
- <tr style="text-align: left;">
-      <th>Step</th>
-      <th>Training Loss</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>100</td>
-      <td>5.046100</td>
-    </tr>
-    <tr>
-      <td>200</td>
-      <td>5.247000</td>
-    </tr>
-    <tr>
-      <td>300</td>
-      <td>5.169800</td>
-    </tr>
-    <tr>
-      <td>400</td>
-      <td>4.918200</td>
-    </tr>
-    <tr>
-      <td>500</td>
-      <td>5.003900</td>
-    </tr>
-    <tr>
-      <td>600</td>
-      <td>4.905400</td>
-    </tr>
-    <tr>
-      <td>700</td>
-      <td>4.645400</td>
-    </tr>
-    <tr>
-      <td>800</td>
-      <td>4.758800</td>
-    </tr>
-    <tr>
-      <td>900</td>
-      <td>4.631000</td>
-    </tr>
-    <tr>
-      <td>1000</td>
-      <td>4.449500</td>
-    </tr>
-    <tr>
-      <td>1100</td>
-      <td>4.537300</td>
-    </tr>
-    <tr>
-      <td>1200</td>
-      <td>4.368400</td>
-    </tr>
-    <tr>
-      <td>1300</td>
-      <td>4.279100</td>
-    </tr>
-    <tr>
-      <td>1400</td>
-      <td>4.356300</td>
-    </tr>
-    <tr>
-      <td>1500</td>
-      <td>4.164800</td>
-    </tr>
-    <tr>
-      <td>1600</td>
-      <td>4.120800</td>
-    </tr>
-    <tr>
-      <td>1700</td>
-      <td>4.198600</td>
-    </tr>
-    <tr>
-      <td>1800</td>
-      <td>3.992700</td>
-    </tr>
-    <tr>
-      <td>1900</td>
-      <td>3.997100</td>
-    </tr>
-    <tr>
-      <td>2000</td>
-      <td>4.038100</td>
-    </tr>
-    <tr>
-      <td>2100</td>
-      <td>3.833600</td>
-    </tr>
-    <tr>
-      <td>2200</td>
-      <td>3.869300</td>
-    </tr>
-    <tr>
-      <td>2300</td>
-      <td>3.901300</td>
-    </tr>
-    <tr>
-      <td>2400</td>
-      <td>3.720400</td>
-    </tr>
-    <tr>
-      <td>2500</td>
-      <td>3.758200</td>
-    </tr>
-    <tr>
-      <td>2600</td>
-      <td>3.758200</td>
-    </tr>
-    <tr>
-      <td>2700</td>
-      <td>3.648400</td>
-    </tr>
-    <tr>
-      <td>2800</td>
-      <td>3.653100</td>
-    </tr>
-  </tbody>
-</table><p></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TrainOutput(global_step=2870, training_loss=4.304410098404834, metrics={&#39;train_runtime&#39;: 462.0655, &#39;train_samples_per_second&#39;: 794.649, &#39;train_steps_per_second&#39;: 6.211, &#39;total_flos&#39;: 1780264886400000.0, &#39;train_loss&#39;: 4.304410098404834, &#39;epoch&#39;: 10.0})
 </pre></div>
 </div>
 </div>
@@ -1080,6 +1062,7 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
 </div>
 </div>
 </div>
+<p>We significantly improved the perplexity of the model. Let’s see if we can improve further with transformer architecture</p>
 <section id="transformer-architecture">
 <h2>Transformer: Architecture<a class="headerlink" href="#transformer-architecture" title="Link to this heading">#</a></h2>
 <p>In earlier section, we saw simple RNN model struggling to learn the language but attention model gave a high boost to the language model. There are few drawbacks of RNN with self attention as mentioned below:</p>
@@ -1165,6 +1148,7 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-model">N-gram model</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bi-gram-model-using-pytorch">Bi-gram model using pytorch</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bigram-model">Bigram model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-implementation">Pytorch implementation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-enhancements">Limitations &amp; Enhancements</a></li>
 </ul>
