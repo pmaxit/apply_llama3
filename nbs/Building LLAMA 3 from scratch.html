@@ -410,7 +410,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-magic-of-context">The magic of context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2-model-definition">GPT-2 Model definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Training</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -435,10 +440,8 @@ document.write(`
 <li><p>N-gram language model</p></li>
 <li><p>RNN neural network using attention</p></li>
 <li><p>Transformer Architecture: The Foundation</p></li>
-<li><p>Tokenization and Data Preparation</p></li>
-<li><p>The Decoder-Only LLAMA Model</p></li>
-<li><p>Training with PyTorch</p></li>
-<li><p>(Optional) Using Hugging Face Transformers</p></li>
+<li><p>The Decoder-Only GPT-2 Model</p></li>
+<li><p>Training with Huggingface API</p></li>
 <li><p>(Optional) converting it into a Chat like format</p></li>
 </ol>
 <p>Imagine a young apprentice learning at the feet of Shakespeare, soaking in his vast knowledge word by word. Over time, the apprentice learns to anticipate the next word, the next phrase, the next line of verse. This is the essence of a language model - a system that predicts the next word, given the ones that come before.</p>
@@ -524,6 +527,7 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
 </div>
 </div>
 </div>
+<p>This code loads the Wikitext dataset, a large collection of text from Wikipedia articles. It then tokenizes the text, breaking it down into individual words (or tokens), and converts the words to lowercase. The original text is removed, leaving a dataset where each entry is a list of lowercase word tokens. This is a standard preprocessing step in natural language processing (NLP) tasks.</p>
 </section>
 <section id="pytorch-implementation">
 <h3>Pytorch implementation<a class="headerlink" href="#pytorch-implementation" title="Link to this heading">#</a></h3>
@@ -546,7 +550,7 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
 </div>
 </div>
 </div>
-<p>With our bi-gram model in hand, we can now generate text</p>
+<p>This code creates a vocabulary of all unique words from the training data and assigns each word a numerical index. It then builds a matrix (bigram_counts) to track the frequency of each word pair (bigram) that appears in the training text. Finally, it calculates the probability of each bigram occurring given the preceding word (bigram_probs). This is a key step in creating a bigram language model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BigramModel</span><span class="p">:</span>
@@ -591,27 +595,14 @@ e.g. $<span class="math notranslate nohighlight">\(P( cat | the ) = 2/4\)</span>
 </div>
 </div>
 </div>
-<p>We can use this model to generate a sentence. Generate method does the following:</p>
-<p>It iterates up to <code class="docutils literal notranslate"><span class="pre">max_length</span> <span class="pre">-</span> <span class="pre">1</span></code> times (since we already have the start word).
-Inside the loop:</p>
+<p>This code defines a BigramModel class.  Here’s what it does:</p>
 <ul class="simple">
-<li><p>If the current_word isn’t in the vocabulary, it stops generating (you could handle this differently, e.g., by choosing a random word from the vocabulary).</p></li>
-<li><p>It retrieves the bigram probabilities for the next word, given the current_word.</p></li>
-<li><p>It uses torch.multinomial to sample the next word’s index based on the probabilities. This ensures words with higher probabilities are more likely to be chosen.</p></li>
-<li><p>The chosen word is added to generated_text, and current_word is updated.</p></li>
+<li><p><strong>init</strong>: Initializes the model with the vocabulary and bigram probabilities.</p></li>
+<li><p><strong>calculate_probability</strong>: Takes a sentence and calculates the probability of it occurring under the bigram model. It handles unseen bigrams (words that don’t appear together in the training data) by assigning them a very low probability.</p></li>
+<li><p><strong>generate</strong>: Generates new text based on the model. Starting from a given word (or the word “the” by default), it samples the next word based on the bigram probabilities, and continues until it reaches the maximum length or encounters a word not in the vocabulary.</p></li>
 </ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;the kerrie oedjang evangelical fhíachrach hersey marine poltaratskyi aitai westerlies dilation convalescence elected gamely eales carlaeon inglés marceline declines pictland&#39;
-</pre></div>
-</div>
-</div>
-</div>
+<p>Here is how we can generate the output:</p>
+<p>model.generate()</p>
 <p>We can also use this model to generate the probability of a sentence.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -758,13 +749,13 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 <li><p><code class="docutils literal notranslate"><span class="pre">keys</span></code> : A set of key vectors ( what model can attend to )</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">values</span></code> : The values associated with each key. ( what model will retrieve )</p></li>
 </ul>
-<p>The attention mechanism works like a spotlight that helps a computer model focus on the most important parts of its input.</p>
+<p>Here is how the forward method works:</p>
 <ul class="simple">
-<li><p>First, it measures how closely a “query” (what the model is looking for) matches different “keys” (the parts of the input it can focus on). This gives us a bunch of scores.</p></li>
-<li><p>Next, these scores are turned into probabilities, making sure they add up to one.  These probabilities show how much the model should focus on each key.</p></li>
-<li><p>Then, the model combines information from each key, but gives more weight to the keys with higher probabilities. This is like putting a stronger spotlight on the more relevant parts.</p></li>
+<li><p><strong>Transpose keys</strong>: The keys matrix is transposed to prepare it for matrix multiplication.</p></li>
+<li><p><strong>Calculate attention scores</strong>: The query and transposed keys are multiplied using batch matrix multiplication (torch.bmm). This produces a matrix where each element represents the similarity (or “attention”) between a query and a key.</p></li>
+<li><p>Scale and normalize: The attention scores are multiplied by the scaling factor and then normalized using the softmax function. This ensures that the attention scores for each query sum to 1.</p></li>
+<li><p><strong>Weighted values</strong>: The normalized attention scores are used to compute a weighted sum of the value vectors. This produces a new representation of the input sequence, where each element is a weighted combination of the original values, with weights determined by the attention mechanism.</p></li>
 </ul>
-<p>Finally, the model outputs both these weighted values (the information it focused on) and the probabilities themselves, so we can see what the model considered important.</p>
 <p><strong>&lt;TODO: Add diagram&gt;</strong></p>
 <p>Here is the model definition for RNN with self attention mechanism.</p>
 <div class="cell docutils container">
@@ -824,39 +815,6 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
             <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">input_ids</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">manual_generate</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">input_text</span><span class="p">,</span> 
-            <span class="n">tokenizer</span><span class="p">,</span> 
-            <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-            <span class="n">temperature</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-        <span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Generates text based on the provided input.</span>
-<span class="sd">    </span>
-<span class="sd">            Args:</span>
-<span class="sd">                input_text (str): The initial text to start generation from.</span>
-<span class="sd">                tokenizer: The HuggingFace tokenizer for the model&#39;s vocabulary.</span>
-<span class="sd">                max_length (int, optional): The maximum length of generated text. Defaults to 50.</span>
-<span class="sd">                temperature (float, optional): Controls the randomness of the generated text. </span>
-<span class="sd">                    Higher values make the output more random. Defaults to 1.0.</span>
-<span class="sd">    </span>
-<span class="sd">            Returns:</span>
-<span class="sd">                str: The generated text sequence.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-    
-            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">input_text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-    
-            <span class="n">generated_sequence</span> <span class="o">=</span> <span class="n">input_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                    <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">generated_sequence</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-                    <span class="n">logits</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">logits</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">temperature</span> 
-                    <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">next_token</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">generated_sequence</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">generated_sequence</span><span class="p">,</span> <span class="n">next_token</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    
-            <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">generated_sequence</span><span class="p">,</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_reorder_cache</span><span class="p">(</span><span class="n">past</span><span class="p">,</span> <span class="n">beam_idx</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">past</span>
@@ -865,6 +823,8 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 </div>
 </div>
 </div>
+<p>RNN-based language models generate text by first encoding an input sequence into a series of hidden states using RNN encoder. Attention mechanism then calculates the attention scores for each hidden state, indicating their importance for predicting the next word</p>
+<p>These attention scores are then used to create a weighted context vector, representing a summary of the most relevant information from the input sequence. This context vector, along with the previous predicted word, is fed into an RNN decoder, which produces a probability dsistribution over the vocabulary. The model then selects the next word either by sampling from this distribution or choosing the most likely word, repeating this process to generate the entire text sequence.</p>
 </section>
 <section id="training">
 <h3>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h3>
@@ -934,8 +894,6 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
     <span class="n">eval_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s2">&quot;validation&quot;</span><span class="p">],</span>
     <span class="n">data_collator</span><span class="o">=</span><span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">mlm</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
 <span class="p">)</span>
-
-<span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -959,6 +917,7 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="generation">
 <h1>Generation<a class="headerlink" href="#generation" title="Link to this heading">#</a></h1>
+<p>We will now use <code class="docutils literal notranslate"><span class="pre">huggingface</span> <span class="pre">pipeline</span></code> api to generate the text.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">pipeline</span>
@@ -1072,6 +1031,204 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 <li><p><strong>Vanishing gradient</strong></p></li>
 </ul>
 <p>Transformer architecture is built on RNN structures but without above flaws. It does this very cleverly by following a unique mechanism to find the recurrence relation.</p>
+<p><img alt="" src="https://www.it-jim.com/wp-content/uploads/2023/06/attention_research_1-727x1024-1.webp" /></p>
+<p>Big Large Language models ( LLAMA 3, GPT , Mistral ) etc. are transformer decoder models. They are based on ‘classical transformer’ which had two blocks: <strong>encoder</strong> on the left and <strong>decoder</strong> on the right. This encoder-decoder architecture is rather arbitrary, and that is not how must transformers model work today. Typically, a moderl transforemr is entier an encoder (Bert Family) or a decoder (GPT family). So, a GPT architecture looks like this:</p>
+<p><img alt="" src="https://www.it-jim.com/wp-content/uploads/2023/06/Architecture-of-the-GPT-2-Transformer-model-768x633.webp" /></p>
+<p>The only difference between <strong>encoder</strong> and <strong>decoder</strong> is that latter is causal. i.e. it cannot go back in time. By ‘time’ here, we mean the position t=1..T of the token(word) in the sequence. Only decoders can be used for text generation. GPT models are pretty much your garden variety of transformer decoders, and different GPT versions differ pretty much only in size, minor details, and the dataset+training regime. If you understand how GPT works then you undertand all big large language model works. For our purposes, we drew our own simplified GPT-2 digaram with explit tensor dimensions. DOn’t worry if it confuses you. We’ll explain it step by step in a moment.</p>
+<p><img alt="" src="https://www.it-jim.com/wp-content/uploads/2023/06/GPT2-768x452.webp" /></p>
+<p>Let’s diive into how transformers work, step by step, using a diagram above</p>
+<p><strong>The components of a Transformer</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Input Tokens (BxT):</strong></p></li>
+</ol>
+<p>These are the words or pieces of text that we feed into the transformer. In our example, let’s say we have a sentence with three words: “I love reading.” Each word is represented by a number (called a token) for the model to understand.
+In the diagram, we see tokens: 464, 23878, and 16599.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Embedder:</strong></p></li>
+</ol>
+<p>The embedder transforms these tokens into a numerical format called embeddings. Think of it as translating each word into a unique code that captures its meaning in a way the model can work with.
+The embeddings are shown as EMB_IN1, EMB_IN2, and EMB_IN3.</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Transformer Blocks:</strong></p></li>
+</ol>
+<p>These are the heart of the transformer model. They process the embeddings, allowing the model to understand the context of each word in relation to others. This is crucial because the meaning of a word can change depending on its context.
+The transformer blocks modify the embeddings, which are now called EMB_OUT1, EMB_OUT2, and EMB_OUT3.</p>
+<ol class="arabic simple" start="4">
+<li><p><strong>Generation Head:</strong></p></li>
+</ol>
+<p>After processing through the transformer blocks, the embeddings are ready to be transformed back into tokens. The generation head takes these embeddings and predicts the most likely next word or sequence of words.
+The predictions are called logits, represented as LOGITS1, LOGITS2, and LOGITS3. These logits are then converted back to readable text.</p>
+<ol class="arabic simple" start="5">
+<li><p><strong>Logits (BxTxV):</strong></p></li>
+</ol>
+<p>Logits are the raw predictions made by the model for each word in the vocabulary (V = 50257, the total number of possible tokens). The model uses these logits to determine which words are most likely to come next in the sequence.</p>
+<section id="the-magic-of-context">
+<h3>The magic of context<a class="headerlink" href="#the-magic-of-context" title="Link to this heading">#</a></h3>
+<p>One of the most impressive aspects of transformers is their ability to understand context. For example, the word “reading” can mean different things in different sentences. In “I love reading books,” it refers to the act of reading. In “Reading is a city in England,” it refers to a place. Transformers can differentiate these meanings based on the surrounding words, making them incredibly powerful for natural language processing.</p>
+</section>
+<section id="gpt-2-model-definition">
+<h3>GPT-2 Model definition<a class="headerlink" href="#gpt-2-model-definition" title="Link to this heading">#</a></h3>
+<p>Let’s create a GPT-2 decoder only model from scratch. We will then train on wikipedia articles to learn about the language structure. As stated above, we’re not changing the definition here but just the number of layers</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a custom GPT-2 configuration</span>
+<span class="n">custom_config</span> <span class="o">=</span> <span class="n">GPT2Config</span><span class="p">(</span>
+    <span class="n">vocab_size</span><span class="o">=</span><span class="mi">50257</span><span class="p">,</span>
+    <span class="n">n_positions</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">n_ctx</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+    <span class="n">n_embd</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span>
+    <span class="n">n_layer</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>      <span class="c1"># Number of transformer layers</span>
+    <span class="n">n_head</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Initialize the custom GPT-2 model with the custom configuration</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">custom_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>Training<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Initialize the trainer for desired number of epochs and batch size. We can also monitor the training using wandb ( not shown here but look at the appendex to know more about callbacks ).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s1">&#39;./results&#39;</span><span class="p">,</span>
+    <span class="n">overwrite_output_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">logging_dir</span><span class="o">=</span><span class="s1">&#39;./logs&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized_datasets</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatasetDict({
+    test: Dataset({
+        features: [&#39;input_ids&#39;, &#39;attention_mask&#39;],
+        num_rows: 4358
+    })
+    train: Dataset({
+        features: [&#39;input_ids&#39;, &#39;attention_mask&#39;],
+        num_rows: 36718
+    })
+    validation: Dataset({
+        features: [&#39;input_ids&#39;, &#39;attention_mask&#39;],
+        num_rows: 3760
+    })
+})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="n">training_args</span><span class="p">,</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span>
+    <span class="n">eval_dataset</span><span class="o">=</span><span class="n">tokenized_datasets</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">],</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">data_collator</span><span class="o">=</span><span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span><span class="n">mlm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+    <div>
+      
+      <progress value='861' max='861' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [861/861 10:16, Epoch 3/3]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Step</th>
+      <th>Training Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>500</td>
+      <td>7.790100</td>
+    </tr>
+  </tbody>
+</table><p></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TrainOutput(global_step=861, training_loss=7.151387036331301, metrics={&#39;train_runtime&#39;: 617.1376, &#39;train_samples_per_second&#39;: 178.492, &#39;train_steps_per_second&#39;: 1.395, &#39;total_flos&#39;: 2398616836374528.0, &#39;train_loss&#39;: 7.151387036331301, &#39;epoch&#39;: 3.0})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;the cat&quot;</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">num_beams</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">batch_decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span><span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting `pad_token_id` to `eos_token_id`:50256 for open-end generation.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&quot;the cat&#39;s series&#39;s first time, he was released in the first time. He was&quot;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_f</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+    <div>
+      
+      <progress value='30' max='30' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [30/30 00:04]
+    </div>
+    </div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perplexity_f</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">eval_f</span><span class="p">[</span><span class="s1">&#39;eval_loss&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perplexity_f</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>514.7259899778954
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -1163,7 +1320,12 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-magic-of-context">The magic of context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2-model-definition">GPT-2 Model definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Training</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
