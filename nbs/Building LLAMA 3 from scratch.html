@@ -405,11 +405,9 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-text-generation">Training and text generation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-mechanism-focus-where-it-matters">Attention Mechanism: Focus where it matters</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-magic-of-context">The magic of context</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2-model-definition">GPT-2 Model definition</a></li>
@@ -418,6 +416,7 @@ document.write(`
 </li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
 </ul>
 
             </nav>
@@ -913,10 +912,8 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 </div>
 </div>
 </section>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="generation">
-<h1>Generation<a class="headerlink" href="#generation" title="Link to this heading">#</a></h1>
+<section id="generation">
+<h3>Generation<a class="headerlink" href="#generation" title="Link to this heading">#</a></h3>
 <p>We will now use <code class="docutils literal notranslate"><span class="pre">huggingface</span> <span class="pre">pipeline</span></code> api to generate the text.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1022,6 +1019,8 @@ Probability of &#39;the cat jumped over the moon&#39;: 5.83346638030119e-20
 </div>
 </div>
 <p>We significantly improved the perplexity of the model. Let’s see if we can improve further with transformer architecture</p>
+</section>
+</section>
 <section id="transformer-architecture">
 <h2>Transformer: Architecture<a class="headerlink" href="#transformer-architecture" title="Link to this heading">#</a></h2>
 <p>In earlier section, we saw simple RNN model struggling to learn the language but attention model gave a high boost to the language model. There are few drawbacks of RNN with self attention as mentioned below:</p>
@@ -1069,6 +1068,7 @@ The predictions are called logits, represented as LOGITS1, LOGITS2, and LOGITS3.
 <section id="gpt-2-model-definition">
 <h3>GPT-2 Model definition<a class="headerlink" href="#gpt-2-model-definition" title="Link to this heading">#</a></h3>
 <p>Let’s create a GPT-2 decoder only model from scratch. We will then train on wikipedia articles to learn about the language structure. As stated above, we’re not changing the definition here but just the number of layers</p>
+<p><img alt="" src="https://miro.medium.com/v2/resize:fit:720/format:webp/0*77memcl1VYIdpE8f.png" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a custom GPT-2 configuration</span>
@@ -1103,31 +1103,6 @@ The predictions are called logits, represented as LOGITS1, LOGITS2, and LOGITS3.
     <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
     <span class="n">logging_dir</span><span class="o">=</span><span class="s1">&#39;./logs&#39;</span><span class="p">,</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized_datasets</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatasetDict({
-    test: Dataset({
-        features: [&#39;input_ids&#39;, &#39;attention_mask&#39;],
-        num_rows: 4358
-    })
-    train: Dataset({
-        features: [&#39;input_ids&#39;, &#39;attention_mask&#39;],
-        num_rows: 36718
-    })
-    validation: Dataset({
-        features: [&#39;input_ids&#39;, &#39;attention_mask&#39;],
-        num_rows: 3760
-    })
-})
 </pre></div>
 </div>
 </div>
@@ -1216,20 +1191,13 @@ The predictions are called logits, represented as LOGITS1, LOGITS2, and LOGITS3.
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perplexity_f</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>514.7259899778954
-</pre></div>
-</div>
-</div>
-</div>
+<p>perplexity_f</p>
 </section>
 </section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="conclusion">
+<h1>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h1>
+<p>Write conclusion here..</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1315,11 +1283,9 @@ The predictions are called logits, represented as LOGITS1, LOGITS2, and LOGITS3.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-text-generation">Training and text generation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-mechanism-focus-where-it-matters">Attention Mechanism: Focus where it matters</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generation">Generation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer-architecture">Transformer: Architecture</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-magic-of-context">The magic of context</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2-model-definition">GPT-2 Model definition</a></li>
@@ -1328,6 +1294,7 @@ The predictions are called logits, represented as LOGITS1, LOGITS2, and LOGITS3.
 </li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
 </ul>
 
   </nav></div>
